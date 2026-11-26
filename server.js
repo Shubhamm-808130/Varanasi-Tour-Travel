@@ -39,7 +39,7 @@ app.use(
 // ==========================================
 app.use(bodyParser.urlencoded({ extended: true, limit: '10mb' }));
 app.use(bodyParser.json({ limit: '10mb' }));
-app.use(cookieParser('kashi-secure-admin-secret-2026'));
+app.use(cookieParser(process.env.SESSION_SECRET || 'kashi-secure-admin-secret-2026'));
 app.use(express.static(path.join(__dirname, 'public'), {
   maxAge: '7d', // 7-day client-side caching for CSS, JS, and WebP images
   etag: true
