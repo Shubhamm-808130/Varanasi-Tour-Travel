@@ -1,0 +1,153 @@
+<%- include('partials/admin-header') %>
+
+<div class="d-flex justify-content-between align-items-center flex-wrap gap-3 mb-4">
+  <div>
+    <h4 class="fw-bold text-dark mb-1"><i class="fa-solid fa-star text-warning me-2"></i> Customer Reviews & Testimonials</h4>
+    <p class="text-muted small mb-0">Manage feedback from pilgrims, travelers, star ratings, and display permissions on the public website.</p>
+  </div>
+  <button class="btn btn-warning fw-bold text-dark" data-bs-toggle="collapse" data-bs-target="#addReviewCard">
+    <i class="fa-solid fa-plus me-1"></i> Add Verified Review
+  </button>
+</div>
+
+<% if (msg) { %>
+  <div class="alert alert-success alert-dismissible fade show mb-4" role="alert">
+    <i class="fa-solid fa-circle-check me-2"></i> <%= msg %>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+<% } %>
+
+<!-- Add Review Collapse -->
+<div class="collapse mb-4" id="addReviewCard">
+  <div class="admin-card border border-warning shadow-sm">
+    <div class="admin-card-header bg-warning bg-opacity-10">
+      <h6 class="fw-bold text-dark mb-0"><i class="fa-solid fa-pen-nib me-2 text-warning"></i> Add Verified Traveler Review</h6>
+    </div>
+    <div class="admin-card-body">
+      <form action="/admin/reviews/add" method="POST">
+        <div class="row g-3">
+          <div class="col-md-5">
+            <label class="form-label small fw-bold">Customer Name & City *</label>
+            <input type="text" name="customer_name" class="form-control form-control-sm" placeholder="e.g. Anand Mishra (Pune)" required>
+          </div>
+          <div class="col-md-3">
+            <label class="form-label small fw-bold">Star Rating *</label>
+            <select name="rating" class="form-select form-select-sm" required>
+              <option value="5">★★★★★ (5 Stars - Excellent)</option>
+              <option value="4">★★★★☆ (4 Stars - Very Good)</option>
+              <option value="3">★★★☆☆ (3 Stars - Good)</option>
+              <option value="2">★★☆☆☆ (2 Stars - Average)</option>
+              <option value="1">★☆☆☆☆ (1 Star - Poor)</option>
+            </select>
+          </div>
+          <div class="col-md-4">
+            <label class="form-label small fw-bold">Trip / Service Taken</label>
+            <input type="text" name="trip_type" class="form-control form-control-sm" placeholder="e.g. Kashi Vishwanath VIP Darshan & Assi Aarti">
+          </div>
+
+          <div class="col-12">
+            <label class="form-label small fw-bold">Review Comment *</label>
+            <textarea name="comment" class="form-control form-control-sm" rows="3" placeholder="Devotee feedback on driver conduct, cab hygiene, punctuality..." required></textarea>
+          </div>
+
+          <div class="col-12 text-end">
+            <button type="button" class="btn btn-secondary btn-sm me-2" data-bs-toggle="collapse" data-bs-target="#addReviewCard">Cancel</button>
+            <button type="submit" class="btn btn-warning btn-sm fw-bold">
+              <i class="fa-solid fa-plus me-1"></i> Publish Review
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Reviews Table -->
+<div class="admin-card">
+  <div class="table-responsive">
+    <table class="table admin-table align-middle">
+      <thead>
+        <tr>
+          <th>Customer</th>
+          <th>Rating</th>
+          <th>Trip Type</th>
+          <th>Feedback</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% if (reviews && reviews.length > 0) { %>
+          <% reviews.forEach(r => { %>
+            <tr>
+              <td>
+                <div class="fw-bold text-dark"><%= r.customer_name %></div>
+                <small class="text-muted"><%= r.created_at ? new Date(r.created_at).toLocaleDateString() : 'Recent' %></small>
+              </td>
+              <td>
+                <div class="text-warning">
+                  <% for (let i = 1; i <= 5; i++) { %>
+                    <i class="fa-solid fa-star <%= i <= r.rating ? '' : 'text-muted text-opacity-25' %>"></i>
+                  <% } %>
+                </div>
+              </td>
+              <td>
+                <span class="badge bg-light text-dark border"><%= r.trip_type || 'Pilgrimage Cab' %></span>
+              </td>
+              <td style="max-width: 320px;">
+                <p class="small text-dark mb-0"><%= r.comment %></p>
+              </td>
+              <td>
+                <% if (r.status === 'APPROVED') { %>
+                  <span class="badge bg-success">APPROVED</span>
+                <% } else if (r.status === 'PENDING') { %>
+                  <span class="badge bg-warning text-dark">PENDING</span>
+                <% } else { %>
+                  <span class="badge bg-danger">REJECTED</span>
+                <% } %>
+              </td>
+              <td>
+                <div class="d-flex gap-1">
+                  <!-- Approve toggle -->
+                  <% if (r.status !== 'APPROVED') { %>
+                    <form action="/admin/reviews/status" method="POST" class="d-inline">
+                      <input type="hidden" name="review_id" value="<%= r.id %>">
+                      <input type="hidden" name="status" value="APPROVED">
+                      <button type="submit" class="btn btn-sm btn-outline-success" title="Approve Review">
+                        <i class="fa-solid fa-check"></i>
+                      </button>
+                    </form>
+                  <% } else { %>
+                    <form action="/admin/reviews/status" method="POST" class="d-inline">
+                      <input type="hidden" name="review_id" value="<%= r.id %>">
+                      <input type="hidden" name="status" value="REJECTED">
+                      <button type="submit" class="btn btn-sm btn-outline-secondary" title="Hide Review">
+                        <i class="fa-solid fa-eye-slash"></i>
+                      </button>
+                    </form>
+                  <% } %>
+
+                  <!-- Delete -->
+                  <form action="/admin/reviews/delete" method="POST" class="d-inline" onsubmit="return confirm('Delete this review permanently?');">
+                    <input type="hidden" name="id" value="<%= r.id %>">
+                    <button type="submit" class="btn btn-sm btn-outline-danger" title="Delete Review">
+                      <i class="fa-solid fa-trash"></i>
+                    </button>
+                  </form>
+                </div>
+              </td>
+            </tr>
+          <% }); %>
+        <% } else { %>
+          <tr>
+            <td colspan="6" class="text-center py-5 text-muted">
+              No customer reviews found.
+            </td>
+          </tr>
+        <% } %>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<%- include('partials/admin-footer') %>

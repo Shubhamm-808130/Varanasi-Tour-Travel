@@ -1,0 +1,89 @@
+<%- include('partials/header', { title: pkg.title + ' - Itinerary & Booking', activePage: 'packages' }) %>
+
+<div class="container py-5">
+  <nav aria-label="breadcrumb" class="mb-4">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="/" class="text-decoration-none">Home</a></li>
+      <li class="breadcrumb-item"><a href="/packages" class="text-decoration-none">Tour Packages</a></li>
+      <li class="breadcrumb-item active" aria-current="page"><%= pkg.title %></li>
+    </ol>
+  </nav>
+
+  <div class="row g-5">
+    <div class="col-lg-8">
+      <div class="card border-0 shadow-sm rounded-4 overflow-hidden mb-4">
+        <img src="<%= pkg.image_url %>" alt="<%= pkg.title %>" class="w-100" style="max-height: 400px; object-fit: cover;">
+        <div class="card-body p-4 p-md-5">
+          <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
+            <span class="badge bg-warning text-dark fw-bold px-3 py-2"><%= pkg.badge %></span>
+            <span class="badge bg-light text-dark border px-3 py-2"><i class="fa-solid fa-clock me-1 text-warning"></i> <%= pkg.duration %></span>
+          </div>
+
+          <h1 class="fw-bold text-primary mb-2"><%= pkg.title %></h1>
+          <p class="lead text-muted mb-4"><%= pkg.subtitle %></p>
+
+          <h5 class="fw-bold text-dark mb-2">Tour Highlights</h5>
+          <div class="p-3 bg-light rounded-3 mb-4 border">
+            <p class="mb-0 text-secondary"><i class="fa-solid fa-star text-warning me-2"></i> <%= pkg.highlights %></p>
+          </div>
+
+          <h5 class="fw-bold text-dark mb-3">Day-wise Detailed Itinerary</h5>
+          <div class="p-4 bg-light rounded-3 mb-4">
+            <p class="text-muted mb-0 leading-relaxed" style="white-space: pre-line;">
+              <%= pkg.itinerary %>
+            </p>
+          </div>
+
+          <div class="row g-3 mb-4">
+            <div class="col-md-6">
+              <div class="card p-3 border-0 bg-success-subtle h-100">
+                <h6 class="fw-bold text-success"><i class="fa-solid fa-circle-check me-2"></i> What's Included</h6>
+                <p class="small text-muted mb-0"><%= pkg.inclusions %></p>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="card p-3 border-0 bg-danger-subtle h-100">
+                <h6 class="fw-bold text-danger"><i class="fa-solid fa-circle-xmark me-2"></i> What's Excluded</h6>
+                <p class="small text-muted mb-0"><%= pkg.exclusions %></p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Booking Sidebar -->
+    <div class="col-lg-4">
+      <div class="card border-0 shadow-sm rounded-4 p-4 sticky-top bg-white" style="top: 100px;">
+        <div class="d-flex justify-content-between align-items-baseline mb-2">
+          <span class="text-muted small">Package Price:</span>
+          <div>
+            <span class="text-decoration-line-through text-muted small me-1">₹<%= pkg.original_price %></span>
+            <span class="fs-2 fw-bold text-success">₹<%= pkg.price.toLocaleString('en-IN') %></span>
+          </div>
+        </div>
+        <p class="text-muted small mb-4">All taxes, toll, fuel, and dedicated AC vehicle included.</p>
+
+        <a href="/booking/car?package_id=<%= pkg.id %>" class="btn btn-saffron w-100 py-2 mb-2">
+          <i class="fa-solid fa-calendar-check me-2"></i> Book This Tour Package
+        </a>
+
+        <a href="https://wa.me/919876543210?text=Hello,%20I%20want%20to%20book%20package:%20<%= encodeURIComponent(pkg.title) %>" target="_blank" class="btn btn-whatsapp w-100 py-2 mb-3">
+          <i class="fa-brands fa-whatsapp me-2"></i> Inquire on WhatsApp
+        </a>
+
+        <hr>
+
+        <h6 class="fw-bold mb-2">Why Book With Us?</h6>
+        <ul class="list-unstyled small text-muted mb-0">
+          <li class="mb-2"><i class="fa-solid fa-check text-success me-2"></i> Doorstep hotel / railway station pickup</li>
+          <li class="mb-2"><i class="fa-solid fa-check text-success me-2"></i> Experienced chauffeurs acquainted with ghat routes</li>
+          <li class="mb-2"><i class="fa-solid fa-check text-success me-2"></i> 100% price transparency with zero hidden charges</li>
+          <li><i class="fa-solid fa-check text-success me-2"></i> Pay cash to driver or mock checkout</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<%- include('partials/footer') %>

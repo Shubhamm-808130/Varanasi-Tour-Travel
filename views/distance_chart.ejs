@@ -1,0 +1,209 @@
+<%- include('partials/header', { title: 'Varanasi Distance Chart | Travel Time & Cab Routes', activePage: 'distance' }) %>
+
+<div class="text-white py-5" style="background: linear-gradient(rgba(15, 23, 42, 0.32), rgba(15, 23, 42, 0.45)), url('https://images.unsplash.com/photo-1582510003544-4d00b7f74220?auto=format&fit=crop&w=1600&q=80') center/cover; text-shadow: 0 2px 12px rgba(0,0,0,0.85);">
+  <div class="container text-center py-3">
+    <span class="badge bg-warning text-dark fw-bold px-3 py-2 mb-2">Official Tourism Connectivity Guide</span>
+    <h1 class="fw-bold mb-2">Varanasi Distance Chart</h1>
+    <p class="lead text-light-50 max-w-600 mx-auto">
+      Comprehensive distance table, highway numbers, travel times, and recommended cab tariffs from Varanasi.
+    </p>
+  </div>
+</div>
+
+<div class="container py-5">
+  <!-- Local Places Distance Table -->
+  <div class="mb-5">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h3 class="fw-bold text-primary mb-0">1. Local Varanasi Sightseeing Distance (from Cantt Station)</h3>
+      <span class="badge bg-light text-secondary border">City Sightseeing</span>
+    </div>
+
+    <div class="table-responsive distance-table border">
+      <table class="table table-hover align-middle mb-0">
+        <thead>
+          <tr>
+            <th>Sightseeing Place</th>
+            <th>Category</th>
+            <th>Distance (KM)</th>
+            <th>Approx Travel Time</th>
+            <th>Entry Fee</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Kashi Vishwanath Temple & Corridor</strong></td>
+            <td><span class="badge-category">Temple</span></td>
+            <td><strong>4.5 km</strong></td>
+            <td>20 mins</td>
+            <td><span class="badge-cost">Free</span></td>
+            <td><a href="/booking/car?destination=Kashi%20Vishwanath" class="btn btn-sm btn-outline-warning text-dark fw-bold">Book Cab</a></td>
+          </tr>
+          <tr>
+            <td><strong>Dashashwamedh Ghat (Ganga Aarti)</strong></td>
+            <td><span class="badge-category">Ghat</span></td>
+            <td><strong>4.2 km</strong></td>
+            <td>18 mins</td>
+            <td><span class="badge-cost">Free</span></td>
+            <td><a href="/booking/car?destination=Dashashwamedh%20Ghat" class="btn btn-sm btn-outline-warning text-dark fw-bold">Book Cab</a></td>
+          </tr>
+          <tr>
+            <td><strong>Assi Ghat (Subah-e-Banaras)</strong></td>
+            <td><span class="badge-category">Ghat</span></td>
+            <td><strong>6.0 km</strong></td>
+            <td>25 mins</td>
+            <td><span class="badge-cost">Free</span></td>
+            <td><a href="/booking/car?destination=Assi%20Ghat" class="btn btn-sm btn-outline-warning text-dark fw-bold">Book Cab</a></td>
+          </tr>
+          <tr>
+            <td><strong>Manikarnika Ghat (Cremation Ghat)</strong></td>
+            <td><span class="badge-category">Ghat</span></td>
+            <td><strong>4.8 km</strong></td>
+            <td>22 mins</td>
+            <td><span class="badge-cost">Free</span></td>
+            <td><a href="/booking/car?destination=Manikarnika%20Ghat" class="btn btn-sm btn-outline-warning text-dark fw-bold">Book Cab</a></td>
+          </tr>
+          <tr>
+            <td><strong>Sarnath Deer Park & Dhamek Stupa</strong></td>
+            <td><span class="badge-category">Excursion</span></td>
+            <td><strong>10.5 km</strong></td>
+            <td>35 mins</td>
+            <td><span class="badge-cost">₹25</span></td>
+            <td><a href="/booking/car?destination=Sarnath" class="btn btn-sm btn-outline-warning text-dark fw-bold">Book Cab</a></td>
+          </tr>
+          <tr>
+            <td><strong>Ramnagar Fort & Museum</strong></td>
+            <td><span class="badge-category">Heritage</span></td>
+            <td><strong>14.0 km</strong></td>
+            <td>40 mins</td>
+            <td><span class="badge-cost">₹50</span></td>
+            <td><a href="/booking/car?destination=Ramnagar%20Fort" class="btn btn-sm btn-outline-warning text-dark fw-bold">Book Cab</a></td>
+          </tr>
+          <tr>
+            <td><strong>Sankat Mochan Hanuman Temple</strong></td>
+            <td><span class="badge-category">Temple</span></td>
+            <td><strong>6.5 km</strong></td>
+            <td>25 mins</td>
+            <td><span class="badge-cost">Free</span></td>
+            <td><a href="/booking/car?destination=Sankat%20Mochan" class="btn btn-sm btn-outline-warning text-dark fw-bold">Book Cab</a></td>
+          </tr>
+          <tr>
+            <td><strong>Kaal Bhairav Temple</strong></td>
+            <td><span class="badge-category">Temple</span></td>
+            <td><strong>3.8 km</strong></td>
+            <td>15 mins</td>
+            <td><span class="badge-cost">Free</span></td>
+            <td><a href="/booking/car?destination=Kaal%20Bhairav" class="btn btn-sm btn-outline-warning text-dark fw-bold">Book Cab</a></td>
+          </tr>
+          <tr>
+            <td><strong>BHU New Vishwanath Temple</strong></td>
+            <td><span class="badge-category">Temple</span></td>
+            <td><strong>7.2 km</strong></td>
+            <td>25 mins</td>
+            <td><span class="badge-cost">Free</span></td>
+            <td><a href="/booking/car?destination=BHU%20New%20Vishwanath" class="btn btn-sm btn-outline-warning text-dark fw-bold">Book Cab</a></td>
+          </tr>
+          <tr>
+            <td><strong>LBS International Airport (Babatpur)</strong></td>
+            <td><span class="badge-category">Airport</span></td>
+            <td><strong>26.0 km</strong></td>
+            <td>45 mins</td>
+            <td><span class="badge-cost">-</span></td>
+            <td><a href="/booking/car?trip_type=airport" class="btn btn-sm btn-saffron">Airport Taxi</a></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Outstation Distance Table -->
+  <div class="mb-5">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h3 class="fw-bold text-primary mb-0">2. Outstation Distance from Varanasi</h3>
+      <span class="badge bg-light text-secondary border">Spiritual Circuit Highways</span>
+    </div>
+
+    <div class="table-responsive distance-table border">
+      <table class="table table-hover align-middle mb-0">
+        <thead>
+          <tr>
+            <th>Destination</th>
+            <th>Distance (KM)</th>
+            <th>Driving Hours</th>
+            <th>Highway Route</th>
+            <th>Cab Fare (Dzire/Etios)</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Varanasi to Prayagraj (Sangam)</strong></td>
+            <td><strong>125 km</strong></td>
+            <td>2.5 Hours</td>
+            <td>NH-19 (6-lane highway)</td>
+            <td><span class="text-success fw-bold">From ₹3,200</span></td>
+            <td><a href="/booking/car?trip_type=outstation&destination=Prayagraj" class="btn btn-sm btn-saffron">Book Cab</a></td>
+          </tr>
+          <tr>
+            <td><strong>Varanasi to Ayodhya (Ram Janmabhoomi)</strong></td>
+            <td><strong>215 km</strong></td>
+            <td>4.5 Hours</td>
+            <td>NH-330 / Purvanchal Exp</td>
+            <td><span class="text-success fw-bold">From ₹4,800</span></td>
+            <td><a href="/booking/car?trip_type=outstation&destination=Ayodhya" class="btn btn-sm btn-saffron">Book Cab</a></td>
+          </tr>
+          <tr>
+            <td><strong>Varanasi to Bodhgaya (Bihar)</strong></td>
+            <td><strong>250 km</strong></td>
+            <td>5.5 Hours</td>
+            <td>Grand Trunk Road (NH-19)</td>
+            <td><span class="text-success fw-bold">From ₹5,500</span></td>
+            <td><a href="/booking/car?trip_type=outstation&destination=Bodhgaya" class="btn btn-sm btn-saffron">Book Cab</a></td>
+          </tr>
+          <tr>
+            <td><strong>Varanasi to Vindhyachal Devi Mandir</strong></td>
+            <td><strong>70 km</strong></td>
+            <td>1.5 Hours</td>
+            <td>Mirzapur Highway</td>
+            <td><span class="text-success fw-bold">From ₹2,400</span></td>
+            <td><a href="/booking/car?trip_type=outstation&destination=Vindhyachal" class="btn btn-sm btn-saffron">Book Cab</a></td>
+          </tr>
+          <tr>
+            <td><strong>Varanasi to Chitrakoot Dham</strong></td>
+            <td><strong>260 km</strong></td>
+            <td>6.0 Hours</td>
+            <td>via Prayagraj & Karwi</td>
+            <td><span class="text-success fw-bold">From ₹6,000</span></td>
+            <td><a href="/booking/car?trip_type=outstation&destination=Chitrakoot" class="btn btn-sm btn-saffron">Book Cab</a></td>
+          </tr>
+          <tr>
+            <td><strong>Varanasi to Lucknow</strong></td>
+            <td><strong>310 km</strong></td>
+            <td>5.5 Hours</td>
+            <td>Purvanchal Expressway</td>
+            <td><span class="text-success fw-bold">From ₹6,800</span></td>
+            <td><a href="/booking/car?trip_type=outstation&destination=Lucknow" class="btn btn-sm btn-saffron">Book Cab</a></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="card bg-warning-subtle border-0 p-4 rounded-4">
+    <div class="row align-items-center">
+      <div class="col-lg-8">
+        <h5 class="fw-bold mb-1">Planning an Outstation Pilgrimage Trip?</h5>
+        <p class="text-muted small mb-0">
+          Our outstation cabs come with verified commercial licenses, zero night charge surprises, and knowledgeable drivers who double up as local pathfinders.
+        </p>
+      </div>
+      <div class="col-lg-4 text-lg-end mt-3 mt-lg-0">
+        <a href="tel:+919876543210" class="btn btn-primary-kashi">
+          <i class="fa-solid fa-phone me-1"></i> Call Us: +91-9876543210
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<%- include('partials/footer') %>

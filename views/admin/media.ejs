@@ -1,0 +1,146 @@
+<%- include('partials/admin-header') %>
+
+<div class="d-flex justify-content-between align-items-center flex-wrap gap-3 mb-4">
+  <div>
+    <h4 class="fw-bold text-dark mb-1"><i class="fa-solid fa-cloud-arrow-up text-info me-2"></i> Photo & Media Uploads</h4>
+    <p class="text-muted small mb-0">Directly upload vehicle pictures, ghat photos, and copy links instantly with validated file safety.</p>
+  </div>
+</div>
+
+<% if (successMessage) { %>
+  <div class="alert alert-success alert-dismissible fade show mb-4" role="alert">
+    <i class="fa-solid fa-circle-check me-2"></i> <%= successMessage %>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+<% } %>
+
+<!-- Direct Upload Card -->
+<div class="admin-card border border-info mb-4 shadow-sm">
+  <div class="admin-card-header bg-info bg-opacity-10">
+    <h6 class="fw-bold text-dark mb-0"><i class="fa-solid fa-upload text-info me-2"></i> Upload New Photo Directly</h6>
+  </div>
+  <div class="admin-card-body">
+    <form action="/admin/media/upload" method="POST" enctype="multipart/form-data">
+      <div class="row g-3 align-items-end">
+        <div class="col-md-8">
+          <label class="form-label small fw-bold">Select Image File (From Computer / Mobile) *</label>
+          <input type="file" name="media_file" class="form-control" accept="image/jpeg,image/png,image/webp" required>
+          <small class="text-muted">Allowed types: <code>.jpg, .jpeg, .png, .webp</code> (Max 5MB). File will be saved securely to <code>public/images/uploads/</code>.</small>
+        </div>
+        <div class="col-md-4">
+          <button type="submit" class="btn btn-info w-100 fw-bold text-white">
+            <i class="fa-solid fa-cloud-arrow-up me-1"></i> Upload & Generate URL
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Uploaded Media Files Grid -->
+<div class="admin-card mb-4">
+  <div class="admin-card-header">
+    <h6 class="fw-bold mb-0 text-dark"><i class="fa-solid fa-folder-open text-warning me-2"></i> Recently Uploaded Files (<%= uploadedFiles ? uploadedFiles.length : 0 %>)</h6>
+  </div>
+  <div class="admin-card-body">
+    <% if (uploadedFiles && uploadedFiles.length > 0) { %>
+      <div class="row g-3">
+        <% uploadedFiles.forEach(file => { %>
+          <div class="col-lg-3 col-md-4 col-sm-6">
+            <div class="border rounded-3 p-2 text-center bg-light">
+              <img src="/images/uploads/<%= file %>" alt="<%= file %>" style="width: 100%; height: 130px; object-fit: cover; border-radius: 6px;" class="mb-2">
+              <div class="text-truncate small text-muted mb-2 font-monospace" title="<%= file %>"><%= file %></div>
+              <button class="btn btn-sm btn-outline-dark w-100" onclick="copyMediaLink('/images/uploads/<%= file %>')">
+                <i class="fa-solid fa-copy me-1"></i> Copy Image Link
+              </button>
+            </div>
+          </div>
+        <% }); %>
+      </div>
+    <% } else { %>
+      <div class="text-center py-4 text-muted small">
+        <i class="fa-solid fa-image fa-2x mb-2 d-block text-secondary"></i>
+        No files uploaded directly yet. Use the upload box above.
+      </div>
+    <% } %>
+  </div>
+</div>
+
+<!-- Quick Vehicle Image Links -->
+<div class="row g-4">
+  <div class="col-lg-6">
+    <div class="admin-card">
+      <div class="admin-card-header">
+        <h6 class="fw-bold mb-0 text-dark"><i class="fa-solid fa-taxi text-warning me-2"></i> Vehicle Photos</h6>
+        <a href="/admin/vehicles" class="small fw-bold text-decoration-none">Edit in Fleet</a>
+      </div>
+      <div class="table-responsive">
+        <table class="table admin-table align-middle">
+          <thead>
+            <tr>
+              <th>Vehicle</th>
+              <th>Preview</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% vehicles.forEach(v => { %>
+              <tr>
+                <td><strong><%= v.name %></strong></td>
+                <td>
+                  <img src="<%= v.image_url %>" alt="<%= v.name %>" style="width: 65px; height: 45px; object-fit: cover; border-radius: 6px; border: 1px solid #e2e8f0;">
+                </td>
+                <td>
+                  <a href="/admin/vehicles" class="btn btn-sm btn-outline-primary">Change</a>
+                </td>
+              </tr>
+            <% }); %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-lg-6">
+    <div class="admin-card">
+      <div class="admin-card-header">
+        <h6 class="fw-bold mb-0 text-dark"><i class="fa-solid fa-map-pin text-danger me-2"></i> Visiting Place Photos</h6>
+        <a href="/admin/attractions" class="small fw-bold text-decoration-none">Edit in Places</a>
+      </div>
+      <div class="table-responsive">
+        <table class="table admin-table align-middle">
+          <thead>
+            <tr>
+              <th>Place</th>
+              <th>Preview</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% attractions.slice(0, 6).forEach(a => { %>
+              <tr>
+                <td><strong><%= a.name %></strong></td>
+                <td>
+                  <img src="<%= a.image_url %>" alt="<%= a.name %>" style="width: 65px; height: 45px; object-fit: cover; border-radius: 6px; border: 1px solid #e2e8f0;">
+                </td>
+                <td>
+                  <a href="/admin/attractions" class="btn btn-sm btn-outline-danger">Change</a>
+                </td>
+              </tr>
+            <% }); %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  function copyMediaLink(path) {
+    navigator.clipboard.writeText(path).then(() => {
+      alert('Copied image path to clipboard: ' + path + '\nYou can now paste this directly into vehicles or places photo input!');
+    });
+  }
+</script>
+
+<%- include('partials/admin-footer') %>

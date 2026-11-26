@@ -1,0 +1,22 @@
+# Dependencies
+node_modules/
+
+# Environment variables
+.env
+.env.local
+
+# SQLite local database & WAL files
+data/*.db
+data/*.db-wal
+data/*.db-shm
+!data/.gitkeep
+
+# Uploaded user media
+public/images/uploads/*
+!public/images/uploads/.gitkeep
+
+# Logs & OS files
+*.log
+npm-debug.log*
+.DS_Store
+Thumbs.db

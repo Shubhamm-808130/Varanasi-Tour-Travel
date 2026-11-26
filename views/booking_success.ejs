@@ -1,0 +1,126 @@
+<%- include('partials/header', { title: 'Booking Confirmed | Varanasi Tour & Travels' }) %>
+
+<div class="container py-5 my-3">
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+      <div class="card border-0 shadow rounded-4 p-4 p-md-5 bg-white text-center">
+        <div class="mb-3">
+          <div class="bg-success text-white rounded-circle d-inline-flex align-items-center justify-content-center" style="width: 76px; height: 76px;">
+            <i class="fa-solid fa-check fa-3x"></i>
+          </div>
+        </div>
+
+        <h2 class="fw-bold text-success mb-1">Booking Confirmed!</h2>
+        <p class="text-muted mb-4">Har Har Mahadev! Your tour service in Varanasi has been successfully registered.</p>
+
+        <!-- Receipt Box -->
+        <div class="card border bg-light p-4 rounded-3 text-start mb-4">
+          <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3 pb-3 border-bottom">
+            <div>
+              <span class="text-muted small">Booking Reference ID:</span>
+              <h4 class="fw-bold text-primary mb-0"><%= booking.booking_ref %></h4>
+            </div>
+            <div>
+              <span class="badge bg-success fs-6"><%= booking.payment_status %></span>
+            </div>
+          </div>
+
+          <div class="row g-3">
+            <div class="col-sm-6">
+              <span class="text-muted small d-block">Customer Name:</span>
+              <strong><%= booking.customer_name %></strong>
+            </div>
+            <div class="col-sm-6">
+              <span class="text-muted small d-block">Phone / WhatsApp:</span>
+              <strong><%= booking.customer_phone %></strong>
+            </div>
+            <div class="col-sm-6">
+              <span class="text-muted small d-block">Service Date:</span>
+              <strong><%= booking.service_date %></strong>
+            </div>
+            <div class="col-sm-6">
+              <span class="text-muted small d-block">Booking Category:</span>
+              <strong><%= booking.booking_type %></strong>
+            </div>
+
+            <% if (booking.vehicle_name) { %>
+              <div class="col-sm-6">
+                <span class="text-muted small d-block">Allocated Vehicle:</span>
+                <strong class="text-primary"><i class="fa-solid fa-car me-1"></i> <%= booking.vehicle_name %></strong>
+              </div>
+            <% } %>
+
+            <% if (booking.hotel_name) { %>
+              <div class="col-sm-6">
+                <span class="text-muted small d-block">Reserved Hotel:</span>
+                <strong class="text-primary"><i class="fa-solid fa-hotel me-1"></i> <%= booking.hotel_name %></strong>
+              </div>
+            <% } %>
+
+            <% 
+              const mapsQuery = booking.pickup_coords ? booking.pickup_coords : encodeURIComponent((booking.pickup_location || 'Varanasi') + ', Varanasi');
+              const googleMapsUrl = `https://www.google.com/maps/search/?api=1&query=${mapsQuery}`;
+            %>
+
+            <% if (booking.pickup_location) { %>
+              <div class="col-sm-6">
+                <span class="text-muted small d-block">Pickup Location:</span>
+                <span class="fw-bold text-dark"><%= booking.pickup_location %></span>
+                <div>
+                  <a href="<%= googleMapsUrl %>" target="_blank" class="btn btn-sm btn-outline-danger mt-1 py-0 px-2" style="font-size: 11px;">
+                    <i class="fa-solid fa-map-location-dot me-1"></i> Open Google Maps Route
+                  </a>
+                </div>
+              </div>
+            <% } %>
+
+            <% if (booking.drop_location) { %>
+              <div class="col-sm-6">
+                <span class="text-muted small d-block">Drop Location:</span>
+                <span><%= booking.drop_location %></span>
+              </div>
+            <% } %>
+
+            <% if (booking.selected_attractions) { %>
+              <div class="col-12">
+                <span class="text-muted small d-block">Included Sightseeing Spots:</span>
+                <span class="badge bg-secondary-subtle text-dark p-2"><%= booking.selected_attractions %></span>
+              </div>
+            <% } %>
+
+            <div class="col-12 pt-3 border-top d-flex justify-content-between align-items-center">
+              <span class="fs-5 fw-bold text-dark">Total Amount:</span>
+              <span class="fs-3 fw-bold text-success">₹<%= booking.total_amount.toLocaleString('en-IN') %></span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Instructions -->
+        <div class="alert alert-warning text-start small mb-4" role="alert">
+          <i class="fa-solid fa-circle-exclamation me-2"></i>
+          <strong>Next Steps:</strong> Driver details (Name, Contact & Cab Number) will be dispatched to your WhatsApp 3 hours prior to your scheduled pickup time. For immediate changes or custom requirements, contact <strong>+91 98765 43210</strong>.
+        </div>
+
+        <div class="d-flex justify-content-center gap-3 flex-wrap">
+          <% 
+            const deskMsg = encodeURIComponent(`Namaste, my booking reference is ${booking.booking_ref} (${booking.customer_name}). Service Date: ${booking.service_date}. Pickup Point: ${booking.pickup_location}. Map Pin: ${googleMapsUrl}`);
+          %>
+          <a href="https://wa.me/919876543210?text=<%= deskMsg %>" target="_blank" class="btn btn-whatsapp">
+            <i class="fa-brands fa-whatsapp me-2"></i> Send to WhatsApp Desk
+          </a>
+          <button onclick="window.print()" class="btn btn-outline-secondary">
+            <i class="fa-solid fa-print me-2"></i> Print Receipt
+          </button>
+          <a href="/#testimonials" class="btn btn-outline-warning text-dark">
+            <i class="fa-solid fa-star me-1 text-warning"></i> Rate & Review Tour
+          </a>
+          <a href="/" class="btn btn-primary-kashi">
+            <i class="fa-solid fa-house me-2"></i> Back to Home
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<%- include('partials/footer') %>

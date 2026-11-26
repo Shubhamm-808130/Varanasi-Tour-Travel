@@ -1,0 +1,762 @@
+<%- include('partials/header', { title: 'Varanasi Tour & Travels | Car Booking & Sightseeing', activePage: 'home' }) %>
+
+<!-- HERO SECTION -->
+<!-- HERO SECTION WITH MULTI-IMAGE BACKGROUND SLIDER -->
+<section class="hero-section">
+  <!-- Dynamic Image Slides (Slides every 4.5 seconds) -->
+  <div class="hero-slider-container">
+    <div class="hero-slide active" style="background-image: url('https://images.unsplash.com/photo-1571536802807-30451e3955d8?auto=format&fit=crop&w=1600&q=80');"></div>
+    <div class="hero-slide" style="background-image: url('https://images.unsplash.com/photo-1561361513-2d000a50f0dc?auto=format&fit=crop&w=1600&q=80');"></div>
+    <div class="hero-slide" style="background-image: url('https://images.unsplash.com/photo-1596176530529-78163a4f7af2?auto=format&fit=crop&w=1600&q=80');"></div>
+    <div class="hero-slide" style="background-image: url('https://images.unsplash.com/photo-1549399542-7e3f8b79c341?auto=format&fit=crop&w=1600&q=80');"></div>
+    <div class="hero-slide" style="background-image: url('https://images.unsplash.com/photo-1627894483216-2138af692e32?auto=format&fit=crop&w=1600&q=80');"></div>
+    <div class="hero-slider-overlay"></div>
+  </div>
+
+  <!-- Slider Indicator Dots -->
+  <div class="hero-slider-dots" id="heroSliderDots">
+    <button class="hero-slider-dot active" data-index="0" aria-label="Slide 1"></button>
+    <button class="hero-slider-dot" data-index="1" aria-label="Slide 2"></button>
+    <button class="hero-slider-dot" data-index="2" aria-label="Slide 3"></button>
+    <button class="hero-slider-dot" data-index="3" aria-label="Slide 4"></button>
+    <button class="hero-slider-dot" data-index="4" aria-label="Slide 5"></button>
+  </div>
+
+  <div class="container hero-content">
+    <div class="row align-items-center g-5">
+      <div class="col-lg-7">
+        <span class="hero-badge"><i class="fa-solid fa-om me-1"></i> Sacred Kashi Yatra 2026</span>
+        <h1 class="hero-title" style="font-size: 3.2rem; text-shadow: 0 4px 20px rgba(0,0,0,0.9);">
+          Experience Divine Varanasi
+        </h1>
+        <p class="hero-subtitle mb-4" style="font-size: 1.15rem; max-width: 500px; text-shadow: 0 2px 10px rgba(0,0,0,0.85);">
+          Spiritual Temple Darshan, Verified AC Cabs & Sunrise Ganges Boat Rides.
+        </p>
+        <div class="d-flex flex-wrap gap-3">
+          <a href="/packages" class="btn btn-outline-light btn-lg px-4" style="backdrop-filter: blur(6px); background: rgba(255, 255, 255, 0.12); border: 1.5px solid rgba(255, 255, 255, 0.65);">
+            <i class="fa-solid fa-map-location-dot me-2"></i> Explore Tour Packages
+          </a>
+        </div>
+
+        <!-- Trust Stats Counter Row -->
+        <div class="d-flex align-items-center gap-4 mt-5 pt-3 border-top border-white border-opacity-10" style="max-width: 480px;">
+          <div>
+            <h5 class="fw-bold mb-0 text-white" style="text-shadow: 0 2px 8px rgba(0,0,0,0.8);">84+</h5>
+            <small class="text-white-50" style="font-size: 11px;">Sacred Ghats & Temples</small>
+          </div>
+          <div class="border-start border-white border-opacity-25 ps-4">
+            <h5 class="fw-bold mb-0 text-white" style="text-shadow: 0 2px 8px rgba(0,0,0,0.8);">5,000+</h5>
+            <small class="text-white-50" style="font-size: 11px;">Happy Pilgrims</small>
+          </div>
+          <div class="border-start border-white border-opacity-25 ps-4">
+            <h5 class="fw-bold mb-0 text-warning" style="text-shadow: 0 2px 8px rgba(0,0,0,0.8);">100%</h5>
+            <small class="text-white-50" style="font-size: 11px;">Transparent Pricing</small>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Booking Widget Card -->
+      <div class="col-lg-5">
+        <div class="quick-booking-card">
+          <h4><i class="fa-solid fa-calculator text-warning me-2"></i> Quick Tour & Cab Fare Estimate</h4>
+          <p class="text-muted small">Select your car and calculate instant fare for Varanasi sightseeing.</p>
+          
+          <form action="/booking/car" method="GET">
+            <div class="mb-3">
+              <label class="form-label fw-bold small">Select Vehicle</label>
+              <select name="vehicle_id" class="form-select">
+                <% vehicles.forEach(v => { %>
+                  <option value="<%= v.id %>"><%= v.name %> (₹<%= v.local_base_rate %>/8hr)</option>
+                <% }) %>
+              </select>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label fw-bold small">Trip Type</label>
+              <div class="d-flex gap-2">
+                <div class="form-check">
+                  <input class="form-check-input" type="radio" name="trip_type" id="quickLocal" value="local" checked>
+                  <label class="form-check-label small" for="quickLocal">Local 8h/80km</label>
+                </div>
+                <div class="form-check">
+                  <input class="form-check-input" type="radio" name="trip_type" id="quickAirport" value="airport">
+                  <label class="form-check-label small" for="quickAirport">Airport Pick/Drop</label>
+                </div>
+                <div class="form-check">
+                  <input class="form-check-input" type="radio" name="trip_type" id="quickOut" value="outstation">
+                  <label class="form-check-label small" for="quickOut">Outstation</label>
+                </div>
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label fw-bold small">Travel Date</label>
+              <input type="date" name="travel_date" class="form-control" id="heroServiceDate" required>
+            </div>
+
+            <button type="submit" class="btn btn-saffron w-100 py-2 fw-bold fs-6">
+              <i class="fa-solid fa-arrow-right me-2"></i> Check Availability & Book
+            </button>
+          </form>
+
+          <div class="mt-3 text-center">
+            <small class="trust-badge"><i class="fa-solid fa-shield-halved text-warning me-1"></i> No advance required. Pay on arrival.</small>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FULL-PAGE ZIGZAG ORANGE VARANASI TEMPLE & VISITING PLACES ROADMAP (Hero down to Reviews) -->
+<div class="varanasi-roadmap-wrapper border-bottom">
+  <!-- Full-Height Organic Wavy Zigzag Dotted Route Line (Normal, Clean, No Glow) -->
+  <% const roadmapPathD = "M 80 28 C 240 60, 430 18, 630 55 C 810 88, 955 72, 920 120 C 880 162, 680 120, 470 160 C 250 200, 60 170, 80 212 C 110 256, 320 212, 540 250 C 760 285, 950 256, 920 304 C 885 348, 690 312, 460 350 C 240 385, 55 356, 80 396 C 115 442, 340 400, 560 438 C 780 472, 945 445, 920 488 C 882 532, 660 495, 440 534 C 230 570, 58 542, 80 580 C 118 625, 350 584, 570 622 C 785 658, 948 630, 920 672 C 880 715, 650 680, 430 718 C 225 755, 62 725, 80 764 C 120 808, 360 768, 580 806 C 790 842, 945 812, 920 856 C 875 900, 650 865, 440 904 C 240 938, 120 925, 80 948"; %>
+  <svg class="varanasi-roadmap-spine-bg" viewBox="0 0 1000 1000" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <path id="roadmapBasePath" class="roadmap-base-dots" d="<%= roadmapPathD %>"
+          fill="none" stroke="#f97316" stroke-width="2.6" stroke-dasharray="5 15" stroke-linecap="round" vector-effect="non-scaling-stroke" />
+  </svg>
+
+  <!-- 11 Outer-Margin Varanasi Places with Hover Detail Boxes -->
+  <% const roadmapStops = [
+    { side: 'left-stop', top: '2.2%', icon: 'fa-dharmachakra', name: 'Sarnath Temple & Museum', desc: 'Sacred Buddhist pilgrimage site where Lord Buddha delivered his first sermon after attaining enlightenment.', metaIcon: 'fa-route', meta: '10.5 km from Cantt' },
+    { side: 'right-stop', top: '11.4%', icon: 'fa-gopuram', name: 'Shri Kashi Vishwanath', desc: 'One of the 12 sacred Jyotirlingas dedicated to Lord Shiva, connected directly to Ganga Ghats via the grand Corridor.', metaIcon: 'fa-clock', meta: '3:00 AM – 11:00 PM' },
+    { side: 'left-stop', top: '20.6%', icon: 'fa-water', name: 'Dashashwamedh Ghat', desc: "Varanasi's most vibrant ghat, world-famous for the mesmerizing evening Ganga Aarti performed by Vedic priests.", metaIcon: 'fa-fire', meta: 'Evening Aarti: 6:30 PM' },
+    { side: 'right-stop', top: '29.8%', icon: 'fa-water', name: 'Assi Ghat', desc: 'Southernmost famous ghat known for peaceful Subah-e-Banaras sunrise aarti, boat rides, and spiritual mornings.', metaIcon: 'fa-sun', meta: 'Subah-e-Banaras: 5:30 AM' },
+    { side: 'left-stop', top: '39.0%', icon: 'fa-gopuram', name: 'Durga Mandir (Durgakund)', desc: '18th-century red-ochre Nagara-style temple dedicated to Maa Durga, situated beside the sacred Durgakund pond.', metaIcon: 'fa-om', meta: '6:00 AM – 9:30 PM' },
+    { side: 'right-stop', top: '48.2%', icon: 'fa-om', name: 'Sankat Mochan Mandir', desc: 'Revered Hanuman temple founded by Sant Tulsidas, famous for Tuesday/Saturday darshan and besan laddoo prasad.', metaIcon: 'fa-clock', meta: '5:00 AM – 10:00 PM' },
+    { side: 'left-stop', top: '57.4%', icon: 'fa-gopuram', name: 'Shri Kashi Vishwanath BHU', desc: 'Magnificent white-marble Birla Temple inside the lush BHU campus with the tallest temple shikhara in Varanasi.', metaIcon: 'fa-route', meta: '8.5 km from Cantt' },
+    { side: 'right-stop', top: '66.6%', icon: 'fa-om', name: 'Tulsi Manas Mandir', desc: 'Historic white-marble temple where Tulsidas composed Ramcharitmanas, featuring sacred verses engraved on its walls.', metaIcon: 'fa-book-open', meta: 'Ramcharitmanas Heritage' },
+    { side: 'left-stop', top: '75.8%', icon: 'fa-water', name: 'Tulsi Ghat', desc: 'Ancient ghat named after Goswami Tulsidas, famous for Krishna Leela, Nag Nathaiya festival, and serene Ganga views.', metaIcon: 'fa-water', meta: 'Near Assi Ghat' },
+    { side: 'right-stop bottom-stop', top: '85.0%', icon: 'fa-gopuram', name: 'Shree Annapurna Mandir', desc: 'Sacred temple of Goddess Annapurna (Goddess of Food & Nourishment) located right beside Kashi Vishwanath.', metaIcon: 'fa-utensils', meta: 'Free Prasad Bhojanalaya' },
+    { side: 'left-stop bottom-stop', top: '94.2%', icon: 'fa-gopuram', name: 'ISKCON Temple', desc: 'Peaceful Sri Sri Radha Gopal Ji temple near Bhelupur, known for soulful Hare Krishna kirtan and spiritual ambiance.', metaIcon: 'fa-music', meta: 'Bhelupur, Varanasi' }
+  ]; %>
+  <% roadmapStops.forEach(stop => { %>
+    <div class="roadmap-stop-pin <%= stop.side %>" style="top: <%= stop.top %>;">
+      <span class="pin-icon-badge"><i class="fa-solid fa-location-dot"></i></span>
+      <i class="fa-solid <%= stop.icon %> place-logo-icon"></i>
+      <span><%= stop.name %></span>
+      <div class="roadmap-detail-card">
+        <h6><i class="fa-solid <%= stop.icon %> me-1"></i> <%= stop.name %></h6>
+        <p><%= stop.desc %></p>
+        <span class="detail-meta"><i class="fa-solid <%= stop.metaIcon %> me-1"></i><%= stop.meta %></span>
+      </div>
+    </div>
+  <% }); %>
+
+  <!-- VALUE PROPOSITIONS -->
+  <section class="py-5 bg-transparent varanasi-roadmap-content">
+      <div class="container">
+        <div class="row g-4 text-center">
+          <div class="col-md-3 col-6">
+            <div class="p-3">
+              <div class="bg-warning-subtle text-warning p-3 rounded-circle d-inline-block mb-3">
+                <i class="fa-solid fa-shield-check fa-2xl"></i>
+              </div>
+              <h6 class="fw-bold mb-1">Local Verified Drivers</h6>
+              <small class="text-muted">Courteous, non-smoking, well-trained drivers familiar with all Varanasi lanes.</small>
+            </div>
+          </div>
+          <div class="col-md-3 col-6">
+            <div class="p-3">
+              <div class="bg-warning-subtle text-warning p-3 rounded-circle d-inline-block mb-3">
+                <i class="fa-solid fa-coins fa-2xl"></i>
+              </div>
+              <h6 class="fw-bold mb-1">Zero Hidden Charges</h6>
+              <small class="text-muted">All tolls, parking fees, and driver allowances transparently communicated.</small>
+            </div>
+          </div>
+          <div class="col-md-3 col-6">
+            <div class="p-3">
+              <div class="bg-warning-subtle text-warning p-3 rounded-circle d-inline-block mb-3">
+                <i class="fa-solid fa-spray-can-sparkles fa-2xl"></i>
+              </div>
+              <h6 class="fw-bold mb-1">Clean & Sanitized Cabs</h6>
+              <small class="text-muted">Spotless AC Sedans, SUVs, and Tempo Travellers serviced before every trip.</small>
+            </div>
+          </div>
+          <div class="col-md-3 col-6">
+            <div class="p-3">
+              <div class="bg-warning-subtle text-warning p-3 rounded-circle d-inline-block mb-3">
+                <i class="fa-solid fa-headset fa-2xl"></i>
+              </div>
+              <h6 class="fw-bold mb-1">24/7 On-Trip Assistance</h6>
+              <small class="text-muted">Dedicated travel desk ready on WhatsApp and phone for immediate support.</small>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  <!-- FEATURED TOUR PACKAGES -->
+  <section class="pt-2 pb-5 bg-transparent varanasi-roadmap-content">
+    <div class="container">
+      <div class="text-center mb-5">
+        <span class="section-tagline">Curated Pilgrimage & Sightseeing</span>
+        <h2 class="section-title">Popular Varanasi Tour Packages</h2>
+        <p class="section-description">
+          Choose from our meticulously crafted itineraries covering Kashi temples, spiritual boat rides, and sacred regional circuits.
+        </p>
+      </div>
+
+    <div class="row g-4">
+      <% packages.forEach(pkg => { %>
+        <div class="col-lg-6">
+          <div class="custom-card flex-md-row">
+            <div class="custom-card-img-wrapper col-md-5" style="min-height: 220px;">
+              <img src="<%= pkg.image_url %>" alt="<%= pkg.title %>" class="custom-card-img">
+              <span class="card-top-tag badge bg-warning text-dark fw-bold"><%= pkg.badge %></span>
+            </div>
+            <div class="custom-card-body col-md-7">
+              <div class="d-flex justify-content-between align-items-center mb-1">
+                <span class="badge bg-light text-dark border"><i class="fa-solid fa-clock me-1 text-warning"></i> <%= pkg.duration %></span>
+                <span class="text-success fw-bold fs-5">₹<%= pkg.price.toLocaleString('en-IN') %></span>
+              </div>
+              <h5 class="custom-card-title mt-2"><%= pkg.title %></h5>
+              <p class="text-muted small mb-3"><%= pkg.subtitle %></p>
+
+              <div class="mt-auto d-flex gap-2">
+                <a href="/packages/<%= pkg.id %>" class="btn btn-outline-dark btn-sm flex-grow-1">
+                  <i class="fa-solid fa-circle-info me-1 text-warning"></i> View Itinerary & Details
+                </a>
+                <a href="/booking/car?package_id=<%= pkg.id %>" class="btn btn-warning text-dark fw-bold btn-sm">
+                  Book Tour
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      <% }) %>
+    </div>
+
+    <div class="text-center mt-4">
+      <a href="/packages" class="btn btn-primary-kashi">
+        <i class="fa-solid fa-list-check me-2"></i> View All Tour Packages
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ======================================================== -->
+<!-- AD SLOT: Mid-Content Responsive Banner (Google AdSense) -->
+<!-- High-CTR Placement between Packages & Visiting Places   -->
+<!-- ======================================================== -->
+<div class="container my-4 varanasi-roadmap-content">
+  <div class="ad-slot-container">
+    <% if (typeof settings !== 'undefined' && settings.ads_code && settings.ads_code.trim()) { %>
+      <%- settings.ads_code %>
+    <% } else { %>
+      <div class="ad-slot-box bg-white">
+        <div><i class="fa-solid fa-rectangle-ad me-1 text-warning"></i> <strong>Advertisement Space</strong> (Google AdSense 728x90 / 970x90 Leaderboard)</div>
+        <small class="text-muted">High-Visibility Ad Slot for SEO & Monetization (Managed in Admin Settings)</small>
+      </div>
+    <% } %>
+  </div>
+</div>
+
+<!-- VISITING PLACES DIRECTORY PREVIEW -->
+<section class="py-5 bg-transparent border-top border-bottom varanasi-roadmap-content">
+  <div class="container">
+    <div class="text-center mb-5">
+      <span class="section-tagline">Kashi Sightseeing Directory</span>
+      <h2 class="section-title">Major Visiting Places in Varanasi</h2>
+      <p class="section-description">
+        Explore distance, travel time, and entry costs for all famous temples, ghats, and monuments.
+      </p>
+    </div>
+
+    <div class="row g-4">
+      <% attractions.slice(0, 6).forEach(place => { %>
+        <div class="col-lg-4 col-md-6">
+          <div class="custom-card">
+            <div class="custom-card-img-wrapper" style="height: 200px;">
+              <img src="<%= place.image_url %>" alt="<%= place.name %>" class="custom-card-img" loading="lazy">
+              <span class="card-top-tag badge-category"><%= place.category %></span>
+              <span class="card-top-rate badge-cost">
+                <%= place.entry_fee === 0 ? 'Free Entry' : '₹' + place.entry_fee + ' Entry' %>
+              </span>
+            </div>
+            <div class="custom-card-body p-3 d-flex flex-column justify-content-between">
+              <div>
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                  <span class="badge bg-light text-primary border px-2 py-1" style="font-size: 11px;">
+                    <i class="fa-solid fa-route me-1"></i> <%= place.distance_km %> km from Cantt
+                  </span>
+                  <span class="text-muted" style="font-size: 11px;">
+                    <i class="fa-regular fa-clock me-1"></i> <%= place.travel_time %>
+                  </span>
+                </div>
+                <h5 class="custom-card-title mb-1" style="font-size: 1.05rem;"><%= place.name %></h5>
+                <div class="text-secondary small fw-medium mb-3"><%= place.hindi_name || '' %></div>
+              </div>
+
+              <!-- Clean Action Button (Details open in Modal) -->
+              <button type="button" class="btn btn-outline-dark btn-sm w-100 fw-semibold py-2" data-bs-toggle="modal" data-bs-target="#placeModal<%= place.id %>">
+                <i class="fa-solid fa-circle-info me-1 text-warning"></i> View Details & Timings
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Visiting Place Details Modal (Opens on Click) -->
+        <div class="modal fade" id="placeModal<%= place.id %>" tabindex="-1" aria-labelledby="placeModalLabel<%= place.id %>" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content border-0 shadow-lg rounded-4 overflow-hidden">
+              <div class="position-relative">
+                <img src="<%= place.image_url %>" alt="<%= place.name %>" style="width: 100%; height: 260px; object-fit: cover;">
+                <button type="button" class="btn-close btn-close-white position-absolute top-0 end-0 m-3 p-2 bg-dark rounded-circle" data-bs-dismiss="modal" aria-label="Close"></button>
+                <div class="position-absolute bottom-0 start-0 w-100 p-3" style="background: linear-gradient(to top, rgba(0,0,0,0.85), transparent);">
+                  <span class="badge bg-warning text-dark fw-bold mb-1"><%= place.category %></span>
+                  <h4 class="text-white fw-bold mb-0"><%= place.name %></h4>
+                  <div class="text-warning small"><%= place.hindi_name %></div>
+                </div>
+              </div>
+
+              <div class="modal-body p-4">
+                <div class="row g-3 mb-3">
+                  <div class="col-sm-4">
+                    <div class="bg-light p-2 rounded border text-center">
+                      <small class="text-muted d-block">Distance from Cantt</small>
+                      <strong class="text-primary"><i class="fa-solid fa-route me-1"></i> <%= place.distance_km %> KM</strong>
+                    </div>
+                  </div>
+                  <div class="col-sm-4">
+                    <div class="bg-light p-2 rounded border text-center">
+                      <small class="text-muted d-block">Estimated Drive</small>
+                      <strong class="text-dark"><i class="fa-regular fa-clock me-1"></i> <%= place.travel_time %></strong>
+                    </div>
+                  </div>
+                  <div class="col-sm-4">
+                    <div class="bg-light p-2 rounded border text-center">
+                      <small class="text-muted d-block">Entry Ticket</small>
+                      <strong class="text-success"><%= place.entry_fee === 0 ? 'Free Entry' : '₹' + place.entry_fee %></strong>
+                    </div>
+                  </div>
+                </div>
+
+                <h6 class="fw-bold text-dark mb-2"><i class="fa-solid fa-om text-warning me-1"></i> Significance & Description</h6>
+                <p class="text-muted small mb-3" style="line-height: 1.6;"><%= place.description %></p>
+
+                <% if (place.timings) { %>
+                  <div class="alert alert-light border small py-2 px-3 mb-3">
+                    <strong><i class="fa-regular fa-clock text-warning me-1"></i> Visiting Timings:</strong> <%= place.timings %>
+                    <% if (place.best_time) { %>
+                      <div class="mt-1"><strong><i class="fa-solid fa-sun text-warning me-1"></i> Best Time to Visit:</strong> <%= place.best_time %></div>
+                    <% } %>
+                  </div>
+                <% } %>
+
+                <div class="d-flex justify-content-end gap-2 pt-2 border-top">
+                  <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Close</button>
+                  <a href="https://wa.me/<%= settings.whatsapp %>?text=Hello%20Varanasi%20Travels,%20I%20want%20to%20visit%20<%= encodeURIComponent(place.name) %>" target="_blank" class="btn btn-success btn-sm">
+                    <i class="fa-brands fa-whatsapp me-1"></i> WhatsApp Inquiry
+                  </a>
+                  <a href="/booking/car?destination=<%= encodeURIComponent(place.name) %>" class="btn btn-warning btn-sm fw-bold text-dark">
+                    <i class="fa-solid fa-taxi me-1"></i> Book Cab to This Place
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      <% }) %>
+    </div>
+
+    <div class="text-center mt-5">
+      <a href="/attractions" class="btn btn-primary-kashi btn-lg">
+        <i class="fa-solid fa-compass me-2"></i> Explore All Visiting Places with Distance & Timing
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- TAXI RENTAL FLEET TARIFFS -->
+<section class="py-5 bg-transparent varanasi-roadmap-content">
+  <div class="container">
+    <div class="text-center mb-4">
+      <span class="section-tagline">Transparent Fleet Pricing</span>
+      <h2 class="section-title">Varanasi Taxi & Cab Rental Rates</h2>
+      <p class="section-description mb-3">
+        Clean, AC vehicles with verified chauffeurs. Choose your vehicle and enjoy guaranteed transparent billing.
+      </p>
+
+      <!-- Cab Category Filter Tabs (Moved to this section per request) -->
+      <div class="d-flex justify-content-center flex-wrap gap-2 mb-4">
+        <button class="btn btn-sm btn-primary-kashi cab-filter-btn active" data-cab-filter="all">All Cabs (<%= vehicles.length %>)</button>
+        <button class="btn btn-sm btn-outline-secondary cab-filter-btn" data-cab-filter="Sedan">Sedan (Dzire / Etios)</button>
+        <button class="btn btn-sm btn-outline-secondary cab-filter-btn" data-cab-filter="SUV / MUV">SUV (Ertiga 6-Seater)</button>
+        <button class="btn btn-sm btn-outline-secondary cab-filter-btn" data-cab-filter="Premium SUV">Luxury SUV (Innova Crysta)</button>
+        <button class="btn btn-sm btn-outline-secondary cab-filter-btn" data-cab-filter="Group Van">Group Van (Tempo Traveller)</button>
+      </div>
+    </div>
+
+    <div class="row g-4" id="cabsTariffGrid">
+      <% vehicles.forEach(v => { %>
+        <div class="col-lg-3 col-md-6 cab-card-item" data-category="<%= v.category %>">
+          <div class="fleet-card">
+            <!-- Multi-Image Carousel Header (Max 5 Slides) -->
+            <div class="fleet-img-wrapper position-relative overflow-hidden" style="height: 195px;">
+              <div id="cabCardCarousel<%= v.id %>" class="carousel slide h-100" data-bs-ride="carousel" data-bs-interval="4000">
+                <% if (v.slides && v.slides.length > 1) { %>
+                  <div class="carousel-indicators mb-2" style="z-index: 4;">
+                    <% v.slides.forEach((s, idx) => { %>
+                      <button type="button" data-bs-target="#cabCardCarousel<%= v.id %>" data-bs-slide-to="<%= idx %>" class="<%= idx === 0 ? 'active' : '' %>" style="width: 6px; height: 6px; border-radius: 50%; border: none; margin: 0 2px;" aria-label="Slide <%= idx + 1 %>"></button>
+                    <% }) %>
+                  </div>
+                <% } %>
+                <div class="carousel-inner h-100">
+                  <% (v.slides || [v.image_url]).forEach((slideUrl, idx) => { %>
+                    <div class="carousel-item <%= idx === 0 ? 'active' : '' %> h-100 position-relative">
+                      <img src="<%= slideUrl %>" alt="<%= v.name %>" class="fleet-img" style="width: 100%; height: 100%; object-fit: cover;" loading="lazy">
+                      <!-- Clean 1/5 Slide Badge -->
+                      <span class="badge bg-dark bg-opacity-75 text-white position-absolute top-0 end-0 m-2 px-2 py-1 fw-bold shadow-sm" style="font-size: 11px; z-index: 5;">
+                        <%= idx + 1 %>/<%= (v.slides || []).length %>
+                      </span>
+                    </div>
+                  <% }) %>
+                </div>
+              </div>
+              <span class="card-top-tag badge bg-dark text-white px-2 py-1" style="z-index: 5;"><%= v.category %></span>
+            </div>
+
+            <!-- Card Body - Clean & Minimal (Details open in Modal) -->
+            <div class="fleet-card-body p-3 d-flex flex-column justify-content-between">
+              <div>
+                <h5 class="fleet-title mb-1" style="font-size: 1.15rem;"><%= v.name %></h5>
+                
+                <div class="d-flex align-items-center gap-2 mb-2">
+                  <span class="badge bg-light text-dark border px-2 py-1" style="font-size: 11px;">
+                    <i class="fa-solid fa-user-group text-primary me-1"></i> <%= v.capacity %> Seater
+                  </span>
+                  <span class="badge bg-light text-success border px-2 py-1" style="font-size: 11px;">
+                    <i class="fa-solid fa-snowflake me-1"></i> AC
+                  </span>
+                </div>
+
+                <div class="mt-2 mb-3">
+                  <span class="text-muted small d-block" style="font-size: 11px;">Starting Package:</span>
+                  <span class="fs-5 fw-bold text-success">₹<%= v.local_base_rate.toLocaleString('en-IN') %></span>
+                  <small class="text-muted">/ 8h (80km)</small>
+                </div>
+              </div>
+
+              <!-- Button to Open Details Modal -->
+              <button type="button" class="btn btn-warning text-dark fw-bold w-100 py-2" data-bs-toggle="modal" data-bs-target="#cabDetailsModal<%= v.id %>">
+                <i class="fa-solid fa-circle-info me-1"></i> View Rates & Details
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Cab Full Details Modal (Opens on Click) -->
+        <div class="modal fade" id="cabDetailsModal<%= v.id %>" tabindex="-1" aria-labelledby="cabModalLabel<%= v.id %>" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content border-0 shadow-lg rounded-4 overflow-hidden">
+              <div class="position-relative">
+                <!-- 5-Slide Modal Carousel (Clean, No Side Arrows, No Text Clutter) -->
+                <div id="cabModalCarousel<%= v.id %>" class="carousel slide" data-bs-ride="carousel" data-bs-interval="4000">
+                  <% if (v.slides && v.slides.length > 1) { %>
+                    <div class="carousel-indicators mb-2" style="z-index: 5;">
+                      <% v.slides.forEach((s, idx) => { %>
+                        <button type="button" data-bs-target="#cabModalCarousel<%= v.id %>" data-bs-slide-to="<%= idx %>" class="<%= idx === 0 ? 'active' : '' %>" style="width: 7px; height: 7px; border-radius: 50%;" aria-label="Slide <%= idx + 1 %>"></button>
+                      <% }) %>
+                    </div>
+                  <% } %>
+                  <div class="carousel-inner" style="height: 290px; background: #0f172a;">
+                    <% (v.slides || [v.image_url]).forEach((slideUrl, idx) => { %>
+                      <div class="carousel-item <%= idx === 0 ? 'active' : '' %> h-100 position-relative">
+                        <img src="<%= slideUrl %>" alt="<%= v.name %> Slide <%= idx + 1 %>" style="width: 100%; height: 100%; object-fit: cover;">
+                        <!-- Clean 1/5 Slide Badge -->
+                        <span class="badge bg-dark bg-opacity-75 text-white position-absolute bottom-0 end-0 m-3 px-2 py-1 fw-bold shadow-sm" style="font-size: 11px; z-index: 5;">
+                          <%= idx + 1 %>/<%= (v.slides || []).length %>
+                        </span>
+                      </div>
+                    <% }) %>
+                  </div>
+                </div>
+
+                <!-- Category Badge on Photo -->
+                <span class="badge bg-dark text-white position-absolute top-0 start-0 m-3 px-2 py-1" style="z-index: 5;"><%= v.category %></span>
+
+                <!-- High-Visibility Cross (X) Close Button -->
+                <button type="button" class="btn btn-dark text-white rounded-circle position-absolute top-0 end-0 m-3 d-flex align-items-center justify-content-center shadow-lg" data-bs-dismiss="modal" aria-label="Close" style="width: 42px; height: 42px; z-index: 1055; border: 2.5px solid #ffffff; background-color: rgba(15, 23, 42, 0.9); cursor: pointer; transition: all 0.2s ease;">
+                  <i class="fa-solid fa-xmark fa-xl text-white"></i>
+                </button>
+              </div>
+
+              <div class="modal-body p-4">
+                <!-- Vehicle Header with Title & Starting Rate (Clean Below Photo, Zero Circle Overlap) -->
+                <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3 pb-2 border-bottom">
+                  <div>
+                    <span class="badge bg-warning text-dark fw-bold mb-1"><%= v.category %></span>
+                    <h4 class="fw-bold text-dark mb-0"><%= v.name %></h4>
+                  </div>
+                  <div class="text-end">
+                    <small class="text-muted d-block" style="font-size: 11px;">Local 8h/80km Fare</small>
+                    <span class="fs-5 fw-bold text-success">₹<%= v.local_base_rate.toLocaleString('en-IN') %></span>
+                  </div>
+                </div>
+                <!-- Specifications Badges Row -->
+                <div class="d-flex flex-wrap gap-2 mb-3">
+                  <span class="badge bg-light text-dark border p-2"><i class="fa-solid fa-user-group text-primary me-1"></i> <%= v.capacity %> Passenger Seats</span>
+                  <span class="badge bg-light text-dark border p-2"><i class="fa-solid fa-suitcase text-primary me-1"></i> <%= v.luggage_capacity %> Large Luggage Bags</span>
+                  <span class="badge bg-light text-success border p-2"><i class="fa-solid fa-snowflake me-1"></i> Chilled Front & Rear AC</span>
+                  <span class="badge bg-light text-primary border p-2"><i class="fa-solid fa-user-tie me-1"></i> Verified Local Chauffeur</span>
+                </div>
+
+                <!-- Complete Tariff Rates Table -->
+                <h6 class="fw-bold text-dark mb-2"><i class="fa-solid fa-tags text-warning me-1"></i> Guaranteed Tariff & Rental Rates</h6>
+                <div class="table-responsive mb-3">
+                  <table class="table table-bordered table-sm mb-0 align-middle">
+                    <thead class="table-light">
+                      <tr>
+                        <th>Trip Service</th>
+                        <th>Tariff / Rate</th>
+                        <th>Inclusions</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td><strong>Local Sightseeing (8h / 80km)</strong></td>
+                        <td><span class="fw-bold text-success fs-6">₹<%= v.local_base_rate.toLocaleString('en-IN') %></span></td>
+                        <td><small class="text-muted">Fuel, Driver Allowance & 80 KM covered</small></td>
+                      </tr>
+                      <tr>
+                        <td><strong>Outstation Highway Travel</strong></td>
+                        <td><span class="fw-bold text-dark">₹<%= v.outstation_rate_per_km %> / km</span></td>
+                        <td><small class="text-muted">Minimum 250km/day billing applies</small></td>
+                      </tr>
+                      <tr>
+                        <td><strong>Airport Pickup / Drop (Babatpur)</strong></td>
+                        <td><span class="fw-bold text-primary">₹<%= Number(v.airport_transfer_rate).toLocaleString('en-IN') %></span></td>
+                        <td><small class="text-muted">Direct doorstep pickup from airport or hotel</small></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+
+                <!-- Inclusions -->
+                <h6 class="fw-bold text-dark mb-2"><i class="fa-solid fa-shield-check text-success me-1"></i> Service Inclusions</h6>
+                <div class="row g-2 mb-3 small text-muted">
+                  <div class="col-6"><i class="fa-solid fa-circle-check text-success me-1"></i> 100% Clean & Sanitized Interior</div>
+                  <div class="col-6"><i class="fa-solid fa-circle-check text-success me-1"></i> Punctual Doorstep Pickup</div>
+                  <div class="col-6"><i class="fa-solid fa-circle-check text-success me-1"></i> Courteous, Non-Smoking Driver</div>
+                  <div class="col-6"><i class="fa-solid fa-circle-check text-success me-1"></i> 24x7 Customer Support Hotline</div>
+                </div>
+
+                <!-- Footer Actions -->
+                <div class="d-flex justify-content-end gap-2 pt-2 border-top">
+                  <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Close</button>
+                  <a href="https://wa.me/<%= settings.whatsapp %>?text=Hello%20Varanasi%20Travels,%20I%20want%20to%20book%20<%= encodeURIComponent(v.name) %>" target="_blank" class="btn btn-success btn-sm">
+                    <i class="fa-brands fa-whatsapp me-1"></i> WhatsApp Booking
+                  </a>
+                  <a href="/booking/car?vehicle_id=<%= v.id %>" class="btn btn-warning btn-sm fw-bold text-dark">
+                    <i class="fa-solid fa-taxi me-1"></i> Book This Cab Online
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      <% }) %>
+    </div>
+  </div>
+</section>
+
+<!-- DEDICATED CAR & FLEET PHOTO GALLERY (Interactive 5-Slide Visual Carousel for Every Car) -->
+<section class="py-5 bg-transparent border-top border-bottom varanasi-roadmap-content" id="fleet-gallery">
+  <div class="container">
+    <div class="text-center mb-5">
+      <span class="section-tagline">Pure Vehicle Photos & Angles</span>
+      <h2 class="section-title">Our Tourist Cabs & Taxi Gallery</h2>
+      <p class="section-description">
+        Authentic 5-angle photo slides: Exterior, interior seating, chilled AC cabin, luggage boot space, and highway cruising.
+      </p>
+    </div>
+
+    <!-- 5-Slide Interactive Photo Gallery for Each Fleet Vehicle -->
+    <div class="row g-4">
+      <% vehicles.forEach(v => { %>
+        <div class="col-lg-3 col-md-6">
+          <div class="card border shadow-sm rounded-4 overflow-hidden h-100 bg-white">
+            <div class="position-relative overflow-hidden" style="height: 220px; background: #0f172a;">
+              <div id="gallerySlideCarousel<%= v.id %>" class="carousel slide h-100" data-bs-ride="carousel" data-bs-interval="4000">
+                <% if (v.slides && v.slides.length > 1) { %>
+                  <div class="carousel-indicators mb-2" style="z-index: 4;">
+                    <% v.slides.forEach((s, idx) => { %>
+                      <button type="button" data-bs-target="#gallerySlideCarousel<%= v.id %>" data-bs-slide-to="<%= idx %>" class="<%= idx === 0 ? 'active' : '' %>" style="width: 6px; height: 6px; border-radius: 50%; border: none; margin: 0 2px;" aria-label="Slide <%= idx + 1 %>"></button>
+                    <% }) %>
+                  </div>
+                <% } %>
+                
+                <div class="carousel-inner h-100">
+                  <% (v.slides || [v.image_url]).forEach((slideUrl, idx) => { %>
+                    <div class="carousel-item <%= idx === 0 ? 'active' : '' %> h-100 position-relative">
+                      <img src="<%= slideUrl %>" alt="<%= v.name %>" class="pure-photo-img" style="width: 100%; height: 100%; object-fit: cover;" loading="lazy">
+                      <!-- Clean 1/5 Slide Badge -->
+                      <span class="badge bg-dark bg-opacity-75 text-white position-absolute top-0 end-0 m-2 px-2 py-1 fw-bold shadow-sm" style="font-size: 11px; z-index: 5;">
+                        <%= idx + 1 %>/<%= (v.slides || []).length %>
+                      </span>
+                    </div>
+                  <% }) %>
+                </div>
+
+                <!-- Top Left Category Tag -->
+                <span class="badge bg-dark text-white position-absolute top-0 start-0 m-2 px-2 py-1" style="z-index: 5;"><%= v.category %></span>
+              </div>
+            </div>
+
+            <!-- Clean Minimal Card Footer (Zero circles overlapping text) -->
+            <div class="card-body py-2 px-3 text-center bg-white border-top">
+              <span class="fw-bold text-dark small"><%= v.name %></span>
+            </div>
+          </div>
+        </div>
+      <% }) %>
+    </div>
+  </div>
+</section>
+
+<!-- DISTANCE CHART TEASER -->
+<section class="py-5 bg-transparent border-top varanasi-roadmap-content">
+  <div class="container">
+    <div class="row align-items-center g-4">
+      <div class="col-lg-6">
+        <span class="section-tagline">Varanasi Connectivity</span>
+        <h2 class="section-title">Distance to Major Nearby Pilgrimage Hubs</h2>
+        <p class="text-muted mb-4">
+          Planning an extended pilgrimage to Ayodhya Ram Mandir, Prayagraj Sangam, or Bodhgaya? Review our official highway distance and driving time guide.
+        </p>
+        <ul class="list-unstyled mb-4">
+          <li class="mb-2"><i class="fa-solid fa-check-circle text-success me-2"></i> <strong>Varanasi to Prayagraj:</strong> 125 km (approx 2.5 hours via NH-19)</li>
+          <li class="mb-2"><i class="fa-solid fa-check-circle text-success me-2"></i> <strong>Varanasi to Ayodhya:</strong> 215 km (approx 4.5 hours via Purvanchal Exp/NH-330)</li>
+          <li class="mb-2"><i class="fa-solid fa-check-circle text-success me-2"></i> <strong>Varanasi to Bodhgaya:</strong> 250 km (approx 5.5 hours via Grand Trunk Rd)</li>
+          <li class="mb-2"><i class="fa-solid fa-check-circle text-success me-2"></i> <strong>Varanasi to Sarnath:</strong> 10.5 km (approx 30 mins)</li>
+        </ul>
+        <a href="/distance-chart" class="btn btn-outline-dark">
+          <i class="fa-solid fa-table me-2"></i> View Complete Distance Chart
+        </a>
+      </div>
+      <div class="col-lg-6">
+        <div class="p-4 bg-light rounded-4 border">
+          <h5 class="fw-bold mb-3"><i class="fa-solid fa-phone-volume text-warning me-2"></i> Need A Custom Travel Itinerary?</h5>
+          <p class="text-muted small">
+            Our local Varanasi travel experts can design a personalized day-wise itinerary for your family, including VIP darshan, boat rides, and comfortable hotel stays.
+          </p>
+          <div class="d-flex flex-column gap-2">
+            <a href="tel:+919876543210" class="btn btn-primary-kashi py-2">
+              <i class="fa-solid fa-phone me-2"></i> Call Now: +91-9876543210
+            </a>
+            <a href="https://wa.me/919876543210?text=Hello,%20please%20plan%20a%20custom%20tour%20for%20my%20family" target="_blank" class="btn btn-whatsapp py-2">
+              <i class="fa-brands fa-whatsapp me-2"></i> Chat with Expert on WhatsApp
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS & GUEST REVIEWS -->
+<section class="py-5 bg-transparent varanasi-roadmap-content" id="testimonials">
+  <div class="container">
+    <% if (typeof reviewSuccess !== 'undefined' && reviewSuccess) { %>
+      <div class="alert alert-success alert-dismissible fade show text-center shadow-sm mb-4" role="alert">
+        <i class="fa-solid fa-circle-check text-success me-2 fa-lg"></i>
+        <strong>Har Har Mahadev!</strong> Thank you for sharing your feedback. Your review has been published successfully!
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+    <% } %>
+
+    <div class="d-flex justify-content-between align-items-center flex-wrap gap-3 mb-5">
+      <div>
+        <span class="section-tagline">Devotee & Traveler Feedback</span>
+        <h2 class="section-title mb-0">What Pilgrims & Tourists Say</h2>
+      </div>
+      <button type="button" class="btn btn-warning fw-bold text-dark px-4 py-2 rounded-pill shadow-sm" data-bs-toggle="modal" data-bs-target="#writeReviewModal">
+        <i class="fa-solid fa-pen-to-square me-2"></i> Write a Review
+      </button>
+    </div>
+
+    <div class="row g-4">
+      <% if (typeof reviews !== 'undefined' && reviews.length > 0) { %>
+        <% reviews.forEach(r => { %>
+          <div class="col-md-4">
+            <div class="card border-0 shadow-sm p-4 h-100 rounded-4 bg-white d-flex flex-column">
+              <div class="text-warning mb-2 fs-5">
+                <% for (let i = 1; i <= 5; i++) { %>
+                  <i class="fa-<%= i <= r.rating ? 'solid' : 'regular' %> fa-star"></i>
+                <% } %>
+              </div>
+              <p class="text-muted small mb-3 flex-grow-1" style="line-height: 1.6;">
+                "<%= r.comment %>"
+              </p>
+              <div class="d-flex align-items-center gap-3 mt-auto pt-3 border-top">
+                <div class="rounded-circle bg-warning text-dark fw-bold d-flex align-items-center justify-content-center" style="width: 42px; height: 42px; font-size: 14px;">
+                  <%= r.customer_name ? r.customer_name.replace(/[^a-zA-Z]/g, '').substring(0, 2).toUpperCase() : 'GS' %>
+                </div>
+                <div>
+                  <h6 class="mb-0 fw-bold text-dark"><%= r.customer_name %></h6>
+                  <small class="text-muted"><%= r.trip_type || 'Pilgrimage Trip' %></small>
+                </div>
+              </div>
+            </div>
+          </div>
+        <% }) %>
+      <% } else { %>
+        <div class="col-12 text-center py-4">
+          <p class="text-muted">No reviews yet. Be the first to share your experience!</p>
+        </div>
+      <% } %>
+    </div>
+  </div>
+</section>
+</div><!-- End .varanasi-roadmap-wrapper -->
+
+<!-- WRITE REVIEW MODAL -->
+<div class="modal fade" id="writeReviewModal" tabindex="-1" aria-labelledby="writeReviewModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content border-0 shadow-lg rounded-4 overflow-hidden">
+      <div class="modal-header bg-warning text-dark py-3">
+        <h5 class="modal-title fw-bold" id="writeReviewModalLabel">
+          <i class="fa-solid fa-star me-2"></i> Share Your Tour & Cab Experience
+        </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <form action="/reviews/submit" method="POST">
+        <div class="modal-body p-4">
+          <div class="mb-3">
+            <label class="form-label small fw-bold">Your Full Name *</label>
+            <input type="text" name="customer_name" class="form-control" placeholder="e.g. Ramesh Sharma (Mumbai)" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label small fw-bold">Trip / Vehicle / City *</label>
+            <input type="text" name="trip_type" class="form-control" placeholder="e.g. Innova Crysta - Kashi Vishwanath & Ayodhya" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label small fw-bold">Your Rating *</label>
+            <select name="rating" class="form-select" required>
+              <option value="5" selected>★★★★★ - 5 Stars (Excellent Experience)</option>
+              <option value="4">★★★★☆ - 4 Stars (Very Good)</option>
+              <option value="3">★★★☆☆ - 3 Stars (Good / Average)</option>
+              <option value="2">★★☆☆☆ - 2 Stars (Needs Improvement)</option>
+              <option value="1">★☆☆☆☆ - 1 Star (Poor Experience)</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label class="form-label small fw-bold">Your Review & Comments *</label>
+            <textarea name="comment" rows="4" class="form-control" placeholder="Share your experience about the cab cleanliness, driver punctuality, VIP darshan guidance, or boat ride..." required></textarea>
+          </div>
+        </div>
+        <div class="modal-footer bg-light py-2">
+          <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn btn-warning btn-sm fw-bold px-4">
+            <i class="fa-solid fa-paper-plane me-1"></i> Submit Review
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<%- include('partials/footer') %>

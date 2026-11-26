@@ -1,0 +1,398 @@
+<%- include('partials/header', { title: 'Book A Car / Taxi in Varanasi | Instant Fare Estimate', activePage: 'car' }) %>
+
+<div class="text-white py-5" style="background: linear-gradient(rgba(15, 23, 42, 0.32), rgba(15, 23, 42, 0.45)), url('https://images.unsplash.com/photo-1549399542-7e3f8b79c341?auto=format&fit=crop&w=1600&q=80') center/cover; text-shadow: 0 2px 12px rgba(0,0,0,0.85);">
+  <div class="container text-center py-3">
+    <span class="badge bg-warning text-dark fw-bold px-3 py-2 mb-2">Varanasi Premier Taxi Service</span>
+    <h1 class="fw-bold mb-2">Book AC Cab in Varanasi</h1>
+    <p class="lead text-light-50 max-w-600 mx-auto">
+      Transparent billing, verified local chauffeurs, spotless vehicles, and instant booking confirmation.
+    </p>
+  </div>
+</div>
+
+<div class="container py-5">
+  <div class="row g-5">
+    <!-- Booking Form Column -->
+    <div class="col-lg-8">
+      <div class="card border-0 shadow-sm rounded-4 p-4 p-md-5 bg-white">
+        <h3 class="fw-bold text-primary mb-4">
+          <i class="fa-solid fa-car-side text-warning me-2"></i> Custom Car Booking Wizard
+        </h3>
+
+        <form action="/booking/car" method="POST" id="carBookingForm">
+          <!-- Step 1: Trip Type -->
+          <div class="mb-4">
+            <label class="form-label fw-bold">1. Select Trip Type</label>
+            <div class="row g-2">
+              <div class="col-md-4">
+                <input type="radio" class="btn-check" name="trip_type" id="type_local" value="local" <%= selectedTripType === 'local' || !selectedTripType ? 'checked' : '' %>>
+                <label class="btn btn-outline-primary w-100 py-3 text-start h-100" for="type_local">
+                  <div class="fw-bold"><i class="fa-solid fa-city me-1"></i> Local Sightseeing</div>
+                  <small class="text-muted d-block">8 Hours / 80 Km Package</small>
+                </label>
+              </div>
+              <div class="col-md-4">
+                <input type="radio" class="btn-check" name="trip_type" id="type_airport" value="airport" <%= selectedTripType === 'airport' ? 'checked' : '' %>>
+                <label class="btn btn-outline-primary w-100 py-3 text-start h-100" for="type_airport">
+                  <div class="fw-bold"><i class="fa-solid fa-plane-departure me-1"></i> Airport Transfer</div>
+                  <small class="text-muted d-block">Pickup or Drop Babatpur</small>
+                </label>
+              </div>
+              <div class="col-md-4">
+                <input type="radio" class="btn-check" name="trip_type" id="type_outstation" value="outstation" <%= selectedTripType === 'outstation' ? 'checked' : '' %>>
+                <label class="btn btn-outline-primary w-100 py-3 text-start h-100" for="type_outstation">
+                  <div class="fw-bold"><i class="fa-solid fa-road me-1"></i> Outstation Tour</div>
+                  <small class="text-muted d-block">Ayodhya / Prayagraj / Gaya</small>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 2: Vehicle Selection -->
+          <div class="mb-4">
+            <div class="d-flex justify-content-between align-items-center mb-1">
+              <label class="form-label fw-bold mb-0" for="vehicleSelect">2. Choose Your Vehicle</label>
+              <span id="vehicleAvailBadge" class="badge bg-success-subtle text-success border border-success-subtle small">
+                <i class="fa-solid fa-circle-check me-1"></i> Live Fleet Stock Checked
+              </span>
+            </div>
+            <select name="vehicle_id" id="vehicleSelect" class="form-select form-select-lg" required>
+              <% vehicles.forEach(v => { %>
+                <% 
+                  const vStock = v.total_quantity || 3;
+                  const vAvailInfo = (typeof availabilityMap !== 'undefined' && availabilityMap[v.id]) ? availabilityMap[v.id] : { isAvailable: true, available: vStock };
+                %>
+                <option value="<%= v.id %>" 
+                        data-name="<%= v.name %>"
+                        data-base-rate="<%= v.local_base_rate %>"
+                        data-per-km="<%= v.outstation_rate_per_km %>"
+                        data-airport-rate="<%= v.airport_transfer_rate %>"
+                        data-capacity="<%= v.capacity %>"
+                        data-total-stock="<%= vStock %>"
+                        <%= !vAvailInfo.isAvailable ? 'disabled' : '' %>
+                        <%= selectedVehicleId == v.id && vAvailInfo.isAvailable ? 'selected' : '' %>>
+                  <%= v.name %> — (<%= v.category %>, <%= v.capacity %> Seater) | <%= vAvailInfo.isAvailable ? '✅ ' + vAvailInfo.available + ' Available' : '❌ Fully Booked' %>
+                </option>
+              <% }) %>
+            </select>
+            <div id="soldOutAlert" class="alert alert-danger py-2 px-3 small mt-2" style="display: none;">
+              <i class="fa-solid fa-triangle-exclamation me-1"></i> <strong>Vehicle Sold Out:</strong> All units of this cab are booked for your selected date. We have automatically selected the next available vehicle for you.
+            </div>
+          </div>
+
+          <!-- Step 3: Sightseeing Places Multi-Select (for Local Tours) -->
+          <div class="mb-4" id="sightseeingPlacesSection">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+              <label class="form-label fw-bold mb-0">3. Select Places You Wish To Visit</label>
+              <small class="text-muted">Click places to add to your tour route</small>
+            </div>
+            <div class="card p-3 bg-light border-0 rounded-3">
+              <div class="row g-2">
+                <% attractions.forEach(place => { %>
+                  <div class="col-md-6">
+                    <div class="form-check p-2 bg-white rounded border">
+                      <input class="form-check-input attraction-check ms-0 me-2" 
+                             type="checkbox" 
+                             name="selected_places" 
+                             value="<%= place.name %>" 
+                             id="place_<%= place.id %>"
+                             data-distance="<%= place.distance_km %>"
+                             <%= selectedDestination && selectedDestination.toLowerCase().includes(place.name.toLowerCase()) ? 'checked' : '' %>>
+                      <label class="form-check-label d-flex justify-content-between align-items-center w-100 pe-2 small" for="place_<%= place.id %>">
+                        <span><strong><%= place.name %></strong></span>
+                        <span class="badge bg-secondary-subtle text-secondary"><%= place.distance_km %> km</span>
+                      </label>
+                    </div>
+                  </div>
+                <% }) %>
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 3.5: Optional Hotel Combo Stay -->
+          <div class="mb-4">
+            <div class="card border border-warning bg-warning-subtle rounded-3 p-3">
+              <div class="form-check form-switch mb-2">
+                <input class="form-check-input" type="checkbox" id="includeHotelCheck" name="include_hotel" value="1" style="cursor: pointer; transform: scale(1.2);">
+                <label class="form-check-label fw-bold text-dark ms-2" for="includeHotelCheck" style="cursor: pointer;">
+                  🏨 Add Hotel Stay in Varanasi (Combo Discount Offer)
+                </label>
+              </div>
+              <p class="text-muted small mb-0 ms-4 ps-1">
+                Bundle your Cab + Ghat-side Hotel Stay together for seamless station/airport pickup and direct check-in!
+              </p>
+
+              <!-- Collapsible Hotel Selection Fields -->
+              <div id="comboHotelFields" class="row g-3 mt-1 pt-2 border-top border-warning-subtle" style="display: none;">
+                <div class="col-md-8">
+                  <label class="form-label small fw-bold">Select Hotel / Stay *</label>
+                  <select name="combo_hotel_id" id="comboHotelSelect" class="form-select form-select-sm">
+                    <% if (hotels && hotels.length > 0) { %>
+                      <% hotels.forEach(h => { %>
+                        <option value="<%= h.id %>" data-price="<%= h.price_per_night %>">
+                          <%= h.name %> (<%= h.distance_to_ghat %>) — ₹<%= h.price_per_night %>/night
+                        </option>
+                      <% }) %>
+                    <% } %>
+                  </select>
+                </div>
+                <div class="col-md-4">
+                  <label class="form-label small fw-bold">Number of Nights</label>
+                  <input type="number" name="combo_hotel_nights" id="comboHotelNights" class="form-control form-control-sm" value="1" min="1" max="15">
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 4: Schedule & Pickup Details -->
+          <div class="mb-4">
+            <label class="form-label fw-bold">4. Schedule & Locations</label>
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label class="form-label small text-muted">Travel Date *</label>
+                <input type="date" name="service_date" id="serviceDate" class="form-control" value="<%= selectedDate || '' %>" required>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label small text-muted">Pickup Time *</label>
+                <input type="time" name="pickup_time" class="form-control" value="09:00" required>
+              </div>
+              <div class="col-md-6">
+                <div class="d-flex justify-content-between align-items-center mb-1">
+                  <label class="form-label small text-muted mb-0">Pickup Location / Hotel / Station *</label>
+                  <button type="button" class="btn btn-link text-danger p-0 text-decoration-none small fw-bold" id="btnDetectGps" style="font-size: 11px;">
+                    <i class="fa-solid fa-location-crosshairs me-1"></i> Detect Live GPS
+                  </button>
+                </div>
+                <div class="input-group">
+                  <input type="text" name="pickup_location" id="pickupLocationInput" class="form-control" placeholder="e.g. Varanasi Cantt Station / Godowlia Hotel" required>
+                  <span class="input-group-text bg-white" id="gpsStatusBadge" style="display: none;">
+                    <i class="fa-solid fa-location-dot text-danger"></i>
+                  </span>
+                </div>
+                <input type="hidden" name="pickup_coords" id="pickupCoordsInput" value="">
+                <div id="gpsAlertSuccess" class="text-success small mt-1" style="display: none; font-size: 11px;">
+                  <i class="fa-solid fa-check-circle me-1"></i> Live GPS Pin captured for Driver navigation!
+                </div>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label small text-muted">Drop Location *</label>
+                <input type="text" name="drop_location" class="form-control" placeholder="e.g. Dashashwamedh Ghat / Cantt Station" required>
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 5: Passenger & Contact Info -->
+          <div class="mb-4">
+            <label class="form-label fw-bold">5. Passenger & Contact Information</label>
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label class="form-label small text-muted">Full Name *</label>
+                <input type="text" name="customer_name" class="form-control" placeholder="Enter your full name" required>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label small text-muted">Mobile Number (WhatsApp) *</label>
+                <input type="tel" name="customer_phone" class="form-control" placeholder="10-digit mobile number" required pattern="[0-9]{10}">
+              </div>
+              <div class="col-md-6">
+                <label class="form-label small text-muted">Email Address *</label>
+                <input type="email" name="customer_email" class="form-control" placeholder="name@example.com" required>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label small text-muted">Number of Passengers</label>
+                <input type="number" name="passengers" class="form-control" value="2" min="1" max="17" required>
+              </div>
+              <div class="col-12">
+                <label class="form-label small text-muted">Special Requests / Itinerary Notes</label>
+                <textarea name="notes" class="form-control" rows="2" placeholder="e.g., Senior citizens traveling, wheelchair assistance, need boat ride arrangement"></textarea>
+              </div>
+            </div>
+          </div>
+
+          <!-- Hidden Total Amount Field -->
+          <input type="hidden" name="total_amount" id="totalAmountInput" value="2200">
+
+          <!-- Submit Actions -->
+          <div class="d-flex flex-wrap gap-3">
+            <button type="submit" name="payment_choice" value="PAY_ON_ARRIVAL" class="btn btn-primary-kashi btn-lg flex-grow-1">
+              <i class="fa-solid fa-check me-2"></i> Confirm Booking (Pay on Arrival)
+            </button>
+            <button type="submit" name="payment_choice" value="PAID_MOCK" class="btn btn-saffron btn-lg flex-grow-1">
+              <i class="fa-solid fa-credit-card me-2"></i> Pay Now (Mock Payment)
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Live Fare Summary Column -->
+    <div class="col-lg-4">
+      <div class="card border-0 shadow-sm rounded-4 p-4 sticky-top bg-white" style="top: 100px;">
+        <h4 class="fw-bold text-primary mb-3">
+          <i class="fa-solid fa-receipt text-warning me-2"></i> Fare Estimation
+        </h4>
+
+        <div class="p-3 bg-light rounded-3 mb-3">
+          <div class="d-flex justify-content-between mb-2">
+            <span class="text-muted small">Estimated Tour Distance:</span>
+            <strong id="calculatedDistance" class="text-primary small">80 km (Local 8h)</strong>
+          </div>
+          <div class="d-flex justify-content-between mb-2">
+            <span class="text-muted small">AC Cab Included:</span>
+            <span class="text-success small fw-bold">✓ Included</span>
+          </div>
+          <div class="d-flex justify-content-between mb-2">
+            <span class="text-muted small">Driver Allowance:</span>
+            <span class="text-success small fw-bold">✓ Included</span>
+          </div>
+          <div class="d-flex justify-content-between mb-2">
+            <span class="text-muted small">Toll & Parking:</span>
+            <span class="text-success small fw-bold">✓ Included</span>
+          </div>
+          <div id="hotelFareBreakdown" class="justify-content-between mb-2 text-warning-emphasis" style="display: none;">
+            <span class="small fw-semibold"><i class="fa-solid fa-hotel me-1"></i> Hotel Accommodation:</span>
+            <span id="hotelFareCost" class="small fw-bold">+₹0</span>
+          </div>
+          <hr class="my-2">
+          <div class="d-flex justify-content-between align-items-center">
+            <span class="fw-bold">Total Estimated Fare:</span>
+            <span id="estimatedFare" class="fs-3 fw-bold text-success">₹2,200</span>
+          </div>
+        </div>
+
+        <div class="card bg-warning-subtle border-0 p-3 mb-3">
+          <h6 class="fw-bold mb-1"><i class="fa-solid fa-hand-holding-heart text-warning me-1"></i> Transparent Pricing Promise</h6>
+          <small class="text-muted">
+            The estimated fare is all-inclusive. You will not be asked for hidden fuel surcharge or extra driver fees during the tour.
+          </small>
+        </div>
+
+        <div class="text-center">
+          <small class="text-muted d-block mb-2">Have a custom multi-day request?</small>
+          <a href="https://wa.me/919876543210?text=Hello,%20I%20need%20custom%20cab%20rates" target="_blank" class="btn btn-outline-success btn-sm w-100">
+            <i class="fa-brands fa-whatsapp me-1"></i> Inquire Direct on WhatsApp
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const btnDetectGps = document.getElementById('btnDetectGps');
+    const pickupLocationInput = document.getElementById('pickupLocationInput');
+    const pickupCoordsInput = document.getElementById('pickupCoordsInput');
+    const gpsStatusBadge = document.getElementById('gpsStatusBadge');
+    const gpsAlertSuccess = document.getElementById('gpsAlertSuccess');
+
+    if (btnDetectGps) {
+      btnDetectGps.addEventListener('click', function () {
+        if (!navigator.geolocation) {
+          alert('Geolocation is not supported by your browser.');
+          return;
+        }
+
+        btnDetectGps.innerHTML = '<i class="fa-solid fa-spinner fa-spin me-1"></i> Detecting GPS...';
+
+        navigator.geolocation.getCurrentPosition(
+          function (pos) {
+            const lat = pos.coords.latitude.toFixed(6);
+            const lng = pos.coords.longitude.toFixed(6);
+            const coords = `${lat},${lng}`;
+            pickupCoordsInput.value = coords;
+
+            if (!pickupLocationInput.value || pickupLocationInput.value.includes('GPS')) {
+              pickupLocationInput.value = `Live GPS Pin (${coords})`;
+            }
+
+            if (gpsStatusBadge) gpsStatusBadge.style.display = 'flex';
+            if (gpsAlertSuccess) gpsAlertSuccess.style.display = 'block';
+            btnDetectGps.innerHTML = '<i class="fa-solid fa-circle-check text-success me-1"></i> GPS Captured';
+          },
+          function (err) {
+            btnDetectGps.innerHTML = '<i class="fa-solid fa-location-crosshairs me-1"></i> Detect Live GPS';
+            alert('Could not fetch GPS location. Please allow browser location access or type your address.');
+          },
+          { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
+        );
+      });
+    }
+
+    // Real-Time Fleet Availability Checker on Date Change
+    const serviceDateInput = document.getElementById('serviceDate');
+    const vehicleSelectEl = document.getElementById('vehicleSelect');
+    const soldOutAlert = document.getElementById('soldOutAlert');
+    const vehicleAvailBadge = document.getElementById('vehicleAvailBadge');
+
+    async function checkFleetAvailability(dateVal) {
+      if (!dateVal || !vehicleSelectEl) return;
+      if (vehicleAvailBadge) {
+        vehicleAvailBadge.innerHTML = '<i class="fa-solid fa-spinner fa-spin me-1"></i> Checking Available Cabs...';
+        vehicleAvailBadge.className = 'badge bg-secondary-subtle text-secondary border small';
+      }
+
+      try {
+        const res = await fetch(`/booking/availability?date=${encodeURIComponent(dateVal)}`);
+        const data = await res.json();
+        let currentlySelected = vehicleSelectEl.value;
+        let selectedWasDisabled = false;
+
+        Array.from(vehicleSelectEl.options).forEach(opt => {
+          const vId = opt.value;
+          const info = data[vId];
+          const vName = opt.dataset.name || opt.text.split('—')[0].trim();
+          const vCap = opt.dataset.capacity || '4';
+
+          if (info) {
+            if (info.available <= 0) {
+              opt.disabled = true;
+              opt.textContent = `${vName} — (${vCap} Seater) | ❌ Fully Booked (0 Available)`;
+              opt.style.color = '#dc2626';
+              if (currentlySelected === vId) {
+                selectedWasDisabled = true;
+              }
+            } else {
+              opt.disabled = false;
+              opt.textContent = `${vName} — (${vCap} Seater) | ✅ ${info.available} Available`;
+              opt.style.color = '';
+            }
+          }
+        });
+
+        if (selectedWasDisabled) {
+          const firstAvail = Array.from(vehicleSelectEl.options).find(o => !o.disabled);
+          if (firstAvail) {
+            vehicleSelectEl.value = firstAvail.value;
+            if (soldOutAlert) soldOutAlert.style.display = 'block';
+            vehicleSelectEl.dispatchEvent(new Event('change'));
+          } else {
+            if (soldOutAlert) {
+              soldOutAlert.style.display = 'block';
+              soldOutAlert.innerHTML = '<i class="fa-solid fa-triangle-exclamation me-1"></i> <strong>All Vehicles Booked:</strong> All cabs in our fleet are booked for this date. Please select another date.';
+            }
+          }
+        } else {
+          if (soldOutAlert) soldOutAlert.style.display = 'none';
+        }
+
+        if (vehicleAvailBadge) {
+          vehicleAvailBadge.innerHTML = '<i class="fa-solid fa-circle-check me-1"></i> Live Fleet Stock Checked';
+          vehicleAvailBadge.className = 'badge bg-success-subtle text-success border border-success-subtle small';
+        }
+      } catch (err) {
+        console.error('Availability check failed:', err);
+      }
+    }
+
+    if (serviceDateInput) {
+      serviceDateInput.addEventListener('change', function () {
+        checkFleetAvailability(this.value);
+      });
+      if (serviceDateInput.value) {
+        checkFleetAvailability(serviceDateInput.value);
+      }
+    }
+  });
+</script>
+
+<%- include('partials/footer') %>

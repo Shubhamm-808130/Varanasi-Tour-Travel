@@ -1,0 +1,106 @@
+  <!-- Floating WhatsApp Pill -->
+  <a href="https://wa.me/<%= settings.whatsapp %>?text=Hello%20Varanasi%20Travels,%20I%20am%20interested%20in%20Varanasi%20tour%20and%20car%20booking" target="_blank" class="floating-whatsapp" title="Chat on WhatsApp">
+    <i class="fa-brands fa-whatsapp fa-2xl"></i>
+    <span>Chat on WhatsApp</span>
+  </a>
+
+  <!-- ======================================================== -->
+  <!-- AD SLOT: Bottom Responsive Leaderboard Ad (AdSense / Partner) -->
+  <!-- You can paste your Google AdSense code or banner script here -->
+  <!-- ======================================================== -->
+  <div class="container my-4">
+    <div class="ad-slot-container">
+      <% if (typeof settings !== 'undefined' && settings.ads_code && settings.ads_code.trim()) { %>
+        <%- settings.ads_code %>
+      <% } else { %>
+        <div class="ad-slot-box">
+          <div><i class="fa-solid fa-rectangle-ad me-1 text-warning"></i> <strong>Advertisement Space</strong> (Google AdSense Responsive 728x90 / 970x90 Banner)</div>
+          <small class="text-muted">Managed directly from Admin Portal -> Website Settings</small>
+        </div>
+      <% } %>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="row g-4">
+        <!-- About -->
+        <div class="col-lg-4 col-md-6">
+          <div class="d-flex align-items-center gap-2 mb-3">
+            <div class="bg-warning text-dark rounded-circle p-2 d-flex align-items-center justify-content-center" style="width: 38px; height: 38px;">
+              <i class="fa-solid fa-om fa-lg"></i>
+            </div>
+            <span class="fs-5 fw-bold text-white"><%= settings.site_title %></span>
+          </div>
+          <p class="text-light-50">
+            Your most trusted local tour & travel companion in the Holy City of Kashi. We offer verified drivers, clean AC cabs, boat rides, hotel bookings, and custom spiritual tour itineraries with 100% price transparency.
+          </p>
+          <div class="d-flex gap-2 mt-3">
+            <a href="#" class="btn btn-outline-light btn-sm rounded-circle" style="width: 36px; height: 36px;"><i class="fa-brands fa-facebook-f"></i></a>
+            <a href="#" class="btn btn-outline-light btn-sm rounded-circle" style="width: 36px; height: 36px;"><i class="fa-brands fa-instagram"></i></a>
+            <a href="#" class="btn btn-outline-light btn-sm rounded-circle" style="width: 36px; height: 36px;"><i class="fa-brands fa-youtube"></i></a>
+            <a href="#" class="btn btn-outline-light btn-sm rounded-circle" style="width: 36px; height: 36px;"><i class="fa-brands fa-x-twitter"></i></a>
+          </div>
+        </div>
+
+        <!-- Quick Links -->
+        <div class="col-lg-2 col-md-6">
+          <h5 class="footer-heading">Quick Links</h5>
+          <ul class="footer-links">
+            <li><a href="/"><i class="fa-solid fa-angle-right me-1 text-warning"></i> Home</a></li>
+            <li><a href="/attractions"><i class="fa-solid fa-angle-right me-1 text-warning"></i> Visiting Places</a></li>
+            <li><a href="/packages"><i class="fa-solid fa-angle-right me-1 text-warning"></i> Tour Packages</a></li>
+            <li><a href="/booking/car"><i class="fa-solid fa-angle-right me-1 text-warning"></i> Taxi Rental</a></li>
+            <li><a href="/booking/hotel"><i class="fa-solid fa-angle-right me-1 text-warning"></i> Hotel Booking</a></li>
+            <li><a href="/distance-chart"><i class="fa-solid fa-angle-right me-1 text-warning"></i> Distance Chart</a></li>
+          </ul>
+        </div>
+
+        <!-- Major Sightseeing -->
+        <div class="col-lg-3 col-md-6">
+          <h5 class="footer-heading">Kashi Pilgrimage</h5>
+          <ul class="footer-links">
+            <li><a href="/attractions"><i class="fa-solid fa-location-dot me-1 text-warning"></i> Kashi Vishwanath Corridor</a></li>
+            <li><a href="/attractions"><i class="fa-solid fa-location-dot me-1 text-warning"></i> Dashashwamedh Evening Aarti</a></li>
+            <li><a href="/attractions"><i class="fa-solid fa-location-dot me-1 text-warning"></i> Subah-e-Banaras Assi Ghat</a></li>
+            <li><a href="/attractions"><i class="fa-solid fa-location-dot me-1 text-warning"></i> Sarnath Dhamek Stupa</a></li>
+            <li><a href="/attractions"><i class="fa-solid fa-location-dot me-1 text-warning"></i> Kaal Bhairav & Sankat Mochan</a></li>
+          </ul>
+        </div>
+
+        <!-- Contact Info -->
+        <div class="col-lg-3 col-md-6">
+          <h5 class="footer-heading">Contact & Booking</h5>
+          <ul class="footer-links">
+            <li class="d-flex align-items-start gap-2 text-light">
+              <i class="fa-solid fa-location-dot text-warning mt-1"></i>
+              <span><%= settings.address %></span>
+            </li>
+            <li class="d-flex align-items-center gap-2 text-light">
+              <i class="fa-solid fa-phone text-warning"></i>
+              <a href="tel:<%= settings.phone_primary %>"><%= settings.phone_primary %> / <%= settings.phone_secondary %></a>
+            </li>
+            <li class="d-flex align-items-center gap-2 text-light">
+              <i class="fa-solid fa-envelope text-warning"></i>
+              <a href="mailto:<%= settings.email %>"><%= settings.email %></a>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom d-flex justify-content-between align-items-center flex-wrap gap-3">
+        <p class="mb-0 text-light opacity-90" style="color: #e2e8f0 !important; font-size: 0.9rem;">&copy; 2026 Varanasi Travels. All Rights Reserved. Devoted to Kashi Tourism.</p>
+        <p class="mb-0 text-light opacity-90" style="color: #e2e8f0 !important; font-size: 0.9rem;">
+          <span class="text-warning">★ ★ ★ ★ ★</span> <strong class="text-white">Rated 4.9/5</strong> by 3,500+ Devotees & Travelers
+        </p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Bootstrap 5 JS Bundle -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- Custom JS -->
+  <script src="/js/main.js"></script>
+</body>
+</html>

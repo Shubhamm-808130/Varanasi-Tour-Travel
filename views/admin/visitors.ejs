@@ -1,0 +1,265 @@
+<%- include('partials/admin-header') %>
+
+<div class="d-flex justify-content-between align-items-center flex-wrap gap-3 mb-4">
+  <div>
+    <h4 class="fw-bold text-dark mb-1">
+      <i class="fa-solid fa-earth-asia text-primary me-2"></i> Visitor Logs & Geolocation Analytics
+    </h4>
+    <p class="text-muted small mb-0">Real-time visitor tracking: see who visited, their City & State, IP address, Device/Browser, and visit timestamp.</p>
+  </div>
+  <form action="/admin/visitors/clear" method="POST" onsubmit="return confirm('Are you sure you want to clear all visitor log records?');">
+    <button type="submit" class="btn btn-outline-danger btn-sm">
+      <i class="fa-solid fa-trash-can me-1"></i> Clear History
+    </button>
+  </form>
+</div>
+
+<% if (msg) { %>
+  <div class="alert alert-success alert-dismissible fade show mb-4 shadow-sm" role="alert">
+    <i class="fa-solid fa-circle-check me-2"></i> <%= msg %>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+<% } %>
+
+<!-- Metric Stat Cards Row -->
+<div class="row g-3 g-md-4 mb-4">
+  <div class="col-xl-3 col-sm-6">
+    <div class="card-stat blue">
+      <div class="small fw-semibold text-white-50 text-uppercase">Total Page Hits</div>
+      <h2 class="fw-bold mb-0 mt-1"><%= metrics.totalViews %></h2>
+      <i class="fa-solid fa-eye stat-icon"></i>
+    </div>
+  </div>
+
+  <div class="col-xl-3 col-sm-6">
+    <div class="card-stat green">
+      <div class="small fw-semibold text-white-50 text-uppercase">Unique Visitors (IPs)</div>
+      <h2 class="fw-bold mb-0 mt-1"><%= metrics.uniqueIps %></h2>
+      <i class="fa-solid fa-users stat-icon"></i>
+    </div>
+  </div>
+
+  <div class="col-xl-3 col-sm-6">
+    <div class="card-stat orange">
+      <div class="small fw-semibold text-white-50 text-uppercase">Today's Visits</div>
+      <h2 class="fw-bold mb-0 mt-1"><%= metrics.todayViews %></h2>
+      <i class="fa-solid fa-calendar-day stat-icon"></i>
+    </div>
+  </div>
+
+  <div class="col-xl-3 col-sm-6">
+    <div class="card-stat purple">
+      <div class="small fw-semibold text-white-50 text-uppercase">Mobile Devices</div>
+      <h2 class="fw-bold mb-0 mt-1"><%= metrics.mobileViews %></h2>
+      <i class="fa-solid fa-mobile-screen-button stat-icon"></i>
+    </div>
+  </div>
+</div>
+
+<!-- Geolocation & Device Distribution Row -->
+<div class="row g-4 mb-4">
+  <!-- Top Visiting Cities / States -->
+  <div class="col-lg-7">
+    <div class="admin-card h-100">
+      <div class="admin-card-header">
+        <h6 class="fw-bold mb-0 text-dark">
+          <i class="fa-solid fa-location-dot text-danger me-2"></i> Top Visitor Locations (City & State)
+        </h6>
+        <span class="badge bg-danger-subtle text-danger border border-danger-subtle">Geo Intelligence</span>
+      </div>
+      <div class="admin-card-body p-0">
+        <% if (topCities && topCities.length > 0) { %>
+          <div class="table-responsive">
+            <table class="table admin-table align-middle mb-0">
+              <thead>
+                <tr>
+                  <th>City & Region</th>
+                  <th>Country</th>
+                  <th>Total Visits</th>
+                  <th>Traffic Share</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% topCities.forEach(c => { 
+                  const pct = metrics.totalViews > 0 ? Math.round((c.visit_count / metrics.totalViews) * 100) : 0;
+                %>
+                  <tr>
+                    <td>
+                      <i class="fa-solid fa-map-pin text-danger me-2"></i>
+                      <strong><%= c.city %></strong>
+                      <span class="text-muted small ms-1">(<%= c.region %>)</span>
+                    </td>
+                    <td>
+                      <span class="badge bg-light text-dark border">
+                        <%= c.country === 'IN' || c.country === 'India' ? '🇮🇳 India' : (c.country || 'Global') %>
+                      </span>
+                    </td>
+                    <td>
+                      <strong class="text-primary"><%= c.visit_count %></strong> visits
+                    </td>
+                    <td style="width: 140px;">
+                      <div class="d-flex align-items-center gap-2">
+                        <div class="progress flex-grow-1" style="height: 6px;">
+                          <div class="progress-bar bg-primary" role="progressbar" style="width: <%= pct %>%;"></div>
+                        </div>
+                        <small class="text-muted fw-bold"><%= pct %>%</small>
+                      </div>
+                    </td>
+                  </tr>
+                <% }); %>
+              </tbody>
+            </table>
+          </div>
+        <% } else { %>
+          <div class="text-center py-4 text-muted small">No city-level data recorded yet.</div>
+        <% } %>
+      </div>
+    </div>
+  </div>
+
+  <!-- Devices & Browsers -->
+  <div class="col-lg-5">
+    <div class="admin-card h-100">
+      <div class="admin-card-header">
+        <h6 class="fw-bold mb-0 text-dark">
+          <i class="fa-solid fa-laptop-mobile text-info me-2"></i> Device & Platform Analytics
+        </h6>
+      </div>
+      <div class="admin-card-body">
+        <div style="height: 220px;" class="mb-3">
+          <canvas id="deviceChart"></canvas>
+        </div>
+        <div class="border-top pt-3">
+          <div class="row g-2 text-center">
+            <% deviceStats.forEach(d => { %>
+              <div class="col">
+                <div class="bg-light p-2 rounded border">
+                  <small class="text-muted d-block"><%= d.device_type %></small>
+                  <strong class="text-dark"><%= d.count %></strong>
+                </div>
+              </div>
+            <% }); %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Detailed Live Visitor Stream Table -->
+<div class="admin-card">
+  <div class="admin-card-header">
+    <div class="d-flex align-items-center gap-2">
+      <h6 class="fw-bold mb-0 text-dark">
+        <i class="fa-solid fa-satellite-dish text-success me-2"></i> Detailed Live Traffic Logs (Last 100 Hits)
+      </h6>
+      <span class="badge bg-success-subtle text-success border border-success-subtle">Real-Time</span>
+    </div>
+  </div>
+
+  <div class="table-responsive">
+    <table class="table admin-table align-middle">
+      <thead>
+        <tr>
+          <th>IP Address</th>
+          <th>Location (City, State, Country)</th>
+          <th>Page Visited</th>
+          <th>Device & Browser</th>
+          <th>Referrer</th>
+          <th>Visit Timestamp</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% if (recentLogs && recentLogs.length > 0) { %>
+          <% recentLogs.forEach(log => { %>
+            <tr>
+              <td>
+                <span class="font-monospace text-dark fw-bold"><%= log.ip_address %></span>
+              </td>
+              <td>
+                <div>
+                  <i class="fa-solid fa-location-dot text-danger me-1"></i>
+                  <strong><%= log.city || 'Varanasi' %></strong>, 
+                  <span class="text-secondary"><%= log.region || 'UP' %></span>
+                </div>
+                <small class="text-muted">
+                  <%= (log.country_code === 'IN' || log.country === 'India') ? '🇮🇳 India' : (log.country || 'Global') %>
+                </small>
+              </td>
+              <td>
+                <a href="<%= log.page_url %>" target="_blank" class="badge bg-light text-primary border text-decoration-none">
+                  <%= log.page_url || '/' %>
+                </a>
+              </td>
+              <td>
+                <div class="small fw-semibold text-dark">
+                  <% if (log.device_type === 'Mobile') { %>
+                    <i class="fa-solid fa-mobile-screen-button text-purple me-1"></i>
+                  <% } else { %>
+                    <i class="fa-solid fa-desktop text-primary me-1"></i>
+                  <% } %>
+                  <%= log.device_type || 'Desktop' %>
+                </div>
+                <small class="text-muted"><%= log.browser || 'Chrome' %> on <%= log.os || 'Windows' %></small>
+              </td>
+              <td>
+                <small class="text-muted text-truncate d-inline-block" style="max-width: 140px;" title="<%= log.referrer %>">
+                  <%= log.referrer || 'Direct Visit' %>
+                </small>
+              </td>
+              <td>
+                <div class="small fw-semibold text-dark">
+                  <%= log.visited_at ? new Date(log.visited_at).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' }) : 'Today' %>
+                </div>
+                <small class="text-muted">
+                  <i class="fa-regular fa-clock me-1"></i>
+                  <%= log.visited_at ? new Date(log.visited_at).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true }) : '' %>
+                </small>
+              </td>
+            </tr>
+          <% }); %>
+        <% } else { %>
+          <tr>
+            <td colspan="6" class="text-center py-5 text-muted">
+              <i class="fa-solid fa-globe fa-2x mb-2 d-block text-secondary"></i>
+              No visitor traffic recorded yet.
+            </td>
+          </tr>
+        <% } %>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Chart.js for Device Breakdown -->
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const devCtx = document.getElementById('deviceChart').getContext('2d');
+    const deviceData = <%- JSON.stringify(deviceStats || []) %>;
+    const labels = deviceData.map(d => d.device_type);
+    const counts = deviceData.map(d => d.count);
+
+    new Chart(devCtx, {
+      type: 'doughnut',
+      data: {
+        labels: labels.length ? labels : ['Desktop', 'Mobile'],
+        datasets: [{
+          data: counts.length ? counts : [1, 1],
+          backgroundColor: ['#3b82f6', '#8b5cf6', '#10b981', '#f59e0b'],
+          borderWidth: 2,
+          borderColor: '#ffffff'
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { position: 'bottom' }
+        },
+        cutout: '60%'
+      }
+    });
+  });
+</script>
+
+<%- include('partials/admin-footer') %>

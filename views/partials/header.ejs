@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= typeof title !== 'undefined' ? title + ' | Varanasi Tour & Travels' : 'Varanasi Tour & Travels - Car Booking & Kashi Yatra' %></title>
+  <meta name="description" content="Book AC Cabs, Curated Kashi Darshan Tour Packages, Ganga Boat Rides and Varanasi Sightseeing with distance and pricing.">
+  
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- FontAwesome 6 -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+  <!-- Top Emergency & Helpline Bar -->
+  <div class="top-bar">
+    <div class="container d-flex justify-content-between align-items-center flex-wrap">
+      <div class="d-flex align-items-center gap-3">
+        <span><i class="fa-solid fa-phone text-warning me-1"></i> <a href="tel:<%= settings.phone_primary %>"><%= settings.phone_primary %></a>, <a href="tel:<%= settings.phone_secondary %>"><%= settings.phone_secondary %></a></span>
+        <span class="d-none d-md-inline">|</span>
+        <span class="d-none d-md-inline"><i class="fa-solid fa-envelope text-warning me-1"></i> <a href="mailto:<%= settings.email %>"><%= settings.email %></a></span>
+      </div>
+      <div class="d-flex align-items-center gap-3">
+        <span class="badge bg-warning text-dark"><i class="fa-solid fa-clock me-1"></i> 24x7 Customer Support</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Navigation Bar -->
+  <nav class="navbar navbar-expand-lg main-navbar sticky-top">
+    <div class="container">
+      <a class="navbar-brand d-flex align-items-center gap-2" href="/">
+        <div class="bg-warning text-dark rounded-circle p-2 d-flex align-items-center justify-content-center" style="width: 44px; height: 44px;">
+          <i class="fa-solid fa-om fa-xl"></i>
+        </div>
+        <div>
+          <span class="navbar-brand-title"><%= (typeof settings !== 'undefined' && settings.site_title) ? settings.site_title : 'Varanasi Travels' %></span>
+          <span class="navbar-brand-subtitle"><%= (typeof settings !== 'undefined' && settings.site_tagline) ? settings.site_tagline : 'Kashi Tour & Cab Booking' %></span>
+        </div>
+      </a>
+
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMain" aria-controls="navbarMain" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarMain">
+        <ul class="navbar-nav ms-auto mb-2 mb-lg-0 align-items-lg-center">
+          <li class="nav-item">
+            <a class="nav-link <%= typeof activePage !== 'undefined' && activePage === 'home' ? 'active' : '' %>" href="/">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link <%= typeof activePage !== 'undefined' && activePage === 'attractions' ? 'active' : '' %>" href="/attractions">Visiting Places</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link <%= typeof activePage !== 'undefined' && activePage === 'packages' ? 'active' : '' %>" href="/packages">Tour Packages</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link <%= typeof activePage !== 'undefined' && activePage === 'car' ? 'active' : '' %>" href="/booking/car">Car Rental</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link <%= typeof activePage !== 'undefined' && activePage === 'hotel' ? 'active' : '' %>" href="/booking/hotel">Hotels</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link <%= typeof activePage !== 'undefined' && activePage === 'distance' ? 'active' : '' %>" href="/distance-chart">Distance Chart</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link <%= typeof activePage !== 'undefined' && activePage === 'contact' ? 'active' : '' %>" href="/contact">Contact Us</a>
+          </li>
+          <li class="nav-item ms-lg-2">
+            <a class="btn btn-saffron btn-sm" href="/booking/car">
+              <i class="fa-solid fa-car-side me-1"></i> Book Now
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>

@@ -1,0 +1,133 @@
+<%- include('partials/header', { title: 'Contact Us | Varanasi Tour & Travels Helpline', activePage: 'contact' }) %>
+
+<div class="text-white py-5" style="background: linear-gradient(rgba(15, 23, 42, 0.32), rgba(15, 23, 42, 0.45)), url('https://images.unsplash.com/photo-1571536802807-30451e3955d8?auto=format&fit=crop&w=1600&q=80') center/cover; text-shadow: 0 2px 12px rgba(0,0,0,0.85);">
+  <div class="container text-center py-3">
+    <span class="badge bg-warning text-dark fw-bold px-3 py-2 mb-2">24x7 Customer Support Desk</span>
+    <h1 class="fw-bold mb-2">Contact Varanasi Travels</h1>
+    <p class="lead text-light-50 max-w-600 mx-auto">
+      Have questions about cab availability, temple darshan timings, or boat booking? Reach out to our local team.
+    </p>
+  </div>
+</div>
+
+<div class="container py-5">
+  <% if (typeof success !== 'undefined' && success) { %>
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+      <i class="fa-solid fa-circle-check fa-lg me-2"></i>
+      <strong>Thank you!</strong> Your inquiry has been submitted successfully. Our travel coordinator will contact you via WhatsApp / Phone shortly.
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+  <% } %>
+
+  <div class="row g-5">
+    <!-- Contact Details Cards -->
+    <div class="col-lg-5">
+      <div class="card border-0 shadow-sm rounded-4 p-4 mb-4 bg-white">
+        <h4 class="fw-bold text-primary mb-4">Office & Helplines</h4>
+
+        <div class="d-flex align-items-start gap-3 mb-4">
+          <div class="bg-warning-subtle text-warning p-3 rounded-circle">
+            <i class="fa-solid fa-location-dot fa-xl"></i>
+          </div>
+          <div>
+            <h6 class="fw-bold mb-1">Main Booking Office</h6>
+            <p class="text-muted small mb-0">
+              D.47/158, Godowlia - Dashashwamedh Main Road,<br>
+              Opposite Kashi Vishwanath Gate No. 4,<br>
+              Varanasi, Uttar Pradesh - 221001
+            </p>
+          </div>
+        </div>
+
+        <div class="d-flex align-items-start gap-3 mb-4">
+          <div class="bg-warning-subtle text-warning p-3 rounded-circle">
+            <i class="fa-solid fa-phone-volume fa-xl"></i>
+          </div>
+          <div>
+            <h6 class="fw-bold mb-1">Phone / Helpline (24x7)</h6>
+            <p class="text-muted small mb-0">
+              <a href="tel:+919876543210" class="text-decoration-none text-dark fw-bold">+91 98765 43210</a><br>
+              <a href="tel:+919012345678" class="text-decoration-none text-dark fw-bold">+91 90123 45678</a>
+            </p>
+          </div>
+        </div>
+
+        <div class="d-flex align-items-start gap-3 mb-4">
+          <div class="bg-warning-subtle text-warning p-3 rounded-circle">
+            <i class="fa-brands fa-whatsapp fa-xl text-success"></i>
+          </div>
+          <div>
+            <h6 class="fw-bold mb-1">WhatsApp Fast Booking</h6>
+            <p class="text-muted small mb-2">Instant quotes & vehicle photos on WhatsApp.</p>
+            <a href="https://wa.me/919876543210?text=Hello%20Varanasi%20Travels" target="_blank" class="btn btn-whatsapp btn-sm">
+              <i class="fa-brands fa-whatsapp me-1"></i> Start WhatsApp Chat
+            </a>
+          </div>
+        </div>
+
+        <div class="d-flex align-items-start gap-3">
+          <div class="bg-warning-subtle text-warning p-3 rounded-circle">
+            <i class="fa-solid fa-envelope fa-xl"></i>
+          </div>
+          <div>
+            <h6 class="fw-bold mb-1">Email Desk</h6>
+            <p class="text-muted small mb-0">
+              <a href="mailto:info@varanasitravels.com" class="text-decoration-none text-dark">info@varanasitravels.com</a>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Inquiry Form -->
+    <div class="col-lg-7">
+      <div class="card border-0 shadow-sm rounded-4 p-4 p-md-5 bg-white">
+        <h4 class="fw-bold text-primary mb-2">Send Custom Tour Inquiry</h4>
+        <p class="text-muted small mb-4">Fill out your details and travel dates to receive a customized itinerary and pricing quote.</p>
+
+        <form action="/contact" method="POST">
+          <div class="row g-3">
+            <div class="col-md-6">
+              <label class="form-label small fw-bold">Full Name *</label>
+              <input type="text" name="name" class="form-control" placeholder="Your name" required>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label small fw-bold">Mobile Number (WhatsApp) *</label>
+              <input type="tel" name="phone" class="form-control" placeholder="10-digit number" required pattern="[0-9]{10}">
+            </div>
+            <div class="col-md-6">
+              <label class="form-label small fw-bold">Email Address *</label>
+              <input type="email" name="email" class="form-control" placeholder="name@example.com" required>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label small fw-bold">Tentative Travel Date</label>
+              <input type="date" name="travel_date" class="form-control">
+            </div>
+            <div class="col-12">
+              <label class="form-label small fw-bold">Subject / Tour Interest</label>
+              <select name="subject" class="form-select">
+                <option value="Car Rental Booking">Car / Taxi Rental Booking</option>
+                <option value="Kashi Darshan Package">Kashi Darshan Temple Package</option>
+                <option value="Ganga Aarti & Boat Ride">Ganga Aarti & Sunrise Boat Ride</option>
+                <option value="Ayodhya & Prayagraj Circuit">Ayodhya & Prayagraj Tour Circuit</option>
+                <option value="Hotel Reservation">Hotel Reservation & Stay</option>
+                <option value="Other Custom Request">Other Custom Request</option>
+              </select>
+            </div>
+            <div class="col-12">
+              <label class="form-label small fw-bold">Your Message / Itinerary Requirements *</label>
+              <textarea name="message" class="form-control" rows="4" placeholder="Mention number of travelers, days, and places you wish to visit..." required></textarea>
+            </div>
+            <div class="col-12">
+              <button type="submit" class="btn btn-primary-kashi btn-lg w-100 py-3">
+                <i class="fa-solid fa-paper-plane me-2"></i> Submit Inquiry Now
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<%- include('partials/footer') %>

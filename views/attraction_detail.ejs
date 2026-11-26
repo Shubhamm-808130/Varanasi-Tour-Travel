@@ -1,0 +1,120 @@
+<%- include('partials/header', { title: place.name + ' - Timings, Distance & Cost', activePage: 'attractions' }) %>
+
+<div class="container py-5">
+  <nav aria-label="breadcrumb" class="mb-4">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="/" class="text-decoration-none">Home</a></li>
+      <li class="breadcrumb-item"><a href="/attractions" class="text-decoration-none">Visiting Places</a></li>
+      <li class="breadcrumb-item active" aria-current="page"><%= place.name %></li>
+    </ol>
+  </nav>
+
+  <div class="row g-5">
+    <div class="col-lg-8">
+      <div class="card border-0 shadow-sm rounded-4 overflow-hidden mb-4">
+        <img src="<%= place.image_url %>" alt="<%= place.name %>" class="w-100" style="max-height: 440px; object-fit: cover;">
+        <div class="card-body p-4 p-md-5">
+          <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
+            <span class="badge-category"><%= place.category %></span>
+            <span class="badge-cost fs-6"><%= place.entry_fee === 0 ? 'Free Entry' : 'Entry Ticket: ₹' + place.entry_fee %></span>
+          </div>
+
+          <h1 class="fw-bold text-primary mb-1"><%= place.name %></h1>
+          <h4 class="text-warning-emphasis mb-4"><%= place.hindi_name %></h4>
+
+          <div class="row g-3 p-3 bg-light rounded-3 mb-4">
+            <div class="col-sm-4">
+              <small class="text-muted d-block">Distance from Cantt:</small>
+              <strong class="fs-6 text-primary"><i class="fa-solid fa-route me-1"></i> <%= place.distance_km %> km</strong>
+            </div>
+            <div class="col-sm-4">
+              <small class="text-muted d-block">Travel Time by Cab:</small>
+              <strong class="fs-6 text-primary"><i class="fa-solid fa-clock me-1"></i> <%= place.travel_time %></strong>
+            </div>
+            <div class="col-sm-4">
+              <small class="text-muted d-block">Location:</small>
+              <strong class="fs-6 text-primary"><i class="fa-solid fa-location-dot me-1"></i> <%= place.location %></strong>
+            </div>
+          </div>
+
+          <h5 class="fw-bold text-dark mb-2">About & Spiritual Importance</h5>
+          <p class="text-muted leading-relaxed mb-4">
+            <%= place.description %>
+          </p>
+
+          <h5 class="fw-bold text-dark mb-2">Key Highlights & What to See</h5>
+          <div class="p-3 bg-warning-subtle text-dark rounded-3 mb-4 border border-warning">
+            <i class="fa-solid fa-gem text-warning me-2"></i> <%= place.highlights %>
+          </div>
+
+          <div class="row g-3 mb-4">
+            <div class="col-md-6">
+              <div class="card p-3 border-0 bg-light h-100">
+                <h6 class="fw-bold"><i class="fa-solid fa-calendar-days text-primary me-2"></i> Timings & Schedule</h6>
+                <p class="small text-muted mb-0"><%= place.timings %></p>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="card p-3 border-0 bg-light h-100">
+                <h6 class="fw-bold"><i class="fa-solid fa-cloud-sun text-warning me-2"></i> Recommended Time to Visit</h6>
+                <p class="small text-muted mb-0"><%= place.best_time %></p>
+              </div>
+            </div>
+          </div>
+
+          <div class="alert alert-info d-flex align-items-center" role="alert">
+            <i class="fa-solid fa-circle-info fa-lg me-3"></i>
+            <div>
+              <strong>Traveler's Tip:</strong> Traffic can be busy in old Varanasi streets near Godowlia. Having a dedicated AC cab drop you at the nearest gate saves hours of walking in the heat.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Sidebar Booking Card -->
+    <div class="col-lg-4">
+      <div class="card border-0 shadow-sm rounded-4 p-4 sticky-top" style="top: 100px;">
+        <h4 class="fw-bold text-primary mb-3">Book Cab to This Place</h4>
+        <p class="text-muted small">
+          Hire an AC car to visit <%= place.name %> and nearby attractions in Varanasi.
+        </p>
+
+        <div class="mb-3 p-3 bg-light rounded-3">
+          <div class="d-flex justify-content-between mb-1">
+            <span class="text-muted small">Distance from Station:</span>
+            <strong><%= place.distance_km %> km</strong>
+          </div>
+          <div class="d-flex justify-content-between mb-1">
+            <span class="text-muted small">Cab Fare Estimate:</span>
+            <strong class="text-success">From ₹600 (One-Way)</strong>
+          </div>
+          <div class="d-flex justify-content-between">
+            <span class="text-muted small">Full Day 8h/80km:</span>
+            <strong class="text-primary">From ₹2,200</strong>
+          </div>
+        </div>
+
+        <a href="/booking/car?destination=<%= encodeURIComponent(place.name) %>" class="btn btn-saffron w-100 py-2 mb-2">
+          <i class="fa-solid fa-car-side me-2"></i> Book AC Cab for This Tour
+        </a>
+
+        <a href="https://wa.me/919876543210?text=Hello,%20I%20want%20to%20visit%20<%= encodeURIComponent(place.name) %>" target="_blank" class="btn btn-whatsapp w-100 py-2 mb-3">
+          <i class="fa-brands fa-whatsapp me-2"></i> Inquire on WhatsApp
+        </a>
+
+        <hr>
+
+        <h6 class="fw-bold mb-2">Included with Cab Service:</h6>
+        <ul class="list-unstyled small text-muted mb-0">
+          <li class="mb-1"><i class="fa-solid fa-check text-success me-2"></i> Punctual doorstep / hotel pickup</li>
+          <li class="mb-1"><i class="fa-solid fa-check text-success me-2"></i> Clean AC car with bottled water</li>
+          <li class="mb-1"><i class="fa-solid fa-check text-success me-2"></i> Knowledgeable local driver</li>
+          <li><i class="fa-solid fa-check text-success me-2"></i> No advance payment required</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<%- include('partials/footer') %>
